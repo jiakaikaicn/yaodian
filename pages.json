@@ -57,6 +57,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/xiaoshou/list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
     "subPackages": [{
         "root": "pages/system",
