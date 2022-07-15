@@ -16,7 +16,7 @@
 			<uni-table :loading="loading" border stripe :emptyText="$t('common.empty')">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
-					<uni-th width="150" align="center">商品名称</uni-th>
+					<uni-th width="150" align="center">商品名称123</uni-th>
 					<!-- <uni-th width="100" align="center">别名</uni-th> -->
 					<uni-th width="100" align="center">种类</uni-th>
 					<uni-th width="60" align="center">规格</uni-th>
