@@ -2,7 +2,7 @@
 	<view>
 		<view class="uni-header">
 			<view class="uni-group hide-on-phone">
-				<view class="uni-title">{{ $t('demo.table.title') }}</view>
+				<view class="uni-title">库存管理</view>
 			</view>
 			<view class="uni-group">
 				<input class="uni-search" type="text" v-model="searchVal" @confirm="search" placeholder="请输入商品名称" />
@@ -11,12 +11,13 @@
 				<!-- <button class="uni-button" type="warn" size="mini" @click="delTable">{{$t('common.button.batchDelete')}}</button> -->
 			</view>
 		</view>
+		
 		<view class="uni-container">
 			<!-- <uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange"> -->
 			<uni-table :loading="loading" border stripe :emptyText="$t('common.empty')">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
-					<uni-th width="150" align="center">商品名称123</uni-th>
+					<uni-th width="150" align="center">商品名称</uni-th>
 					<!-- <uni-th width="100" align="center">别名</uni-th> -->
 					<uni-th width="100" align="center">种类</uni-th>
 					<uni-th width="60" align="center">规格</uni-th>
@@ -76,6 +77,7 @@
 				placeholder="请输入要添加的库存数量(新增数量)"
 				@confirm="dialogInputConfirm"
 			></uni-popup-dialog>
+			
 		</uni-popup>
 	</view>
 </template>
@@ -111,6 +113,17 @@ export default {
 			this.$refs.popup.open();
 		},
 		dialogInputConfirm(value) {
+			var regPos = /^-?[0-9]*/; //判断是否是数字。
+			if(regPos.test(value) ){
+				value = value;
+			}else{
+				console.log(222);
+				uni.showToast({
+					title:'请输入数字（正数，负数）',
+					icon:"error"
+				})
+				return
+			}
 			let obj = this.clickAddKucunObj;
 			let { _id, kucun } = obj;
 			kucun = Number(kucun) + Number(value);
@@ -123,7 +136,7 @@ export default {
 				},
 				success: res => {
 					uni.showToast({
-						title: '删除成功'
+						title: '更新成功'
 					});
 					uni.hideLoading();
 					this.getData(1);
@@ -131,7 +144,7 @@ export default {
 				fail: err => {
 					console.log(err);
 					uni.showToast({
-						title: '删除失败'
+						title: '更新失败'
 					});
 				}
 			});

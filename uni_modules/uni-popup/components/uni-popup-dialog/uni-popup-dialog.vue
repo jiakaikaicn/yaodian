@@ -8,6 +8,11 @@
 				<text class="uni-dialog-content-text">{{content}}</text>
 			</slot>
 		</view>
+		<view v-else-if="mode === 'pwd'" class="uni-dialog-content">
+			<slot>
+				<input class="uni-dialog-input" v-model="val" type="password" :placeholder="placeholderText" :focus="focus" >
+			</slot>
+		</view>
 		<view v-else class="uni-dialog-content">
 			<slot>
 				<input class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholderText" :focus="focus" >
@@ -120,7 +125,7 @@
 				this.dialogType = val
 			},
 			mode(val) {
-				if (val === 'input') {
+				if (val === 'input' || val === 'pwd') {
 					this.dialogType = 'info'
 				}
 			},
@@ -132,7 +137,7 @@
 			// 对话框遮罩不可点击
 			this.popup.disableMask()
 			// this.popup.closeMask()
-			if (this.mode === 'input') {
+			if (this.mode === 'input' || this.mode === 'pwd') {
 				this.dialogType = 'info'
 				this.val = this.value
 			} else {
@@ -147,7 +152,7 @@
 			 * 点击确认按钮
 			 */
 			onOk() {
-				if (this.mode === 'input'){
+				if (this.mode === 'input' || this.mode === 'pwd'){
 					this.$emit('confirm', this.val)
 				}else{
 					this.$emit('confirm')
