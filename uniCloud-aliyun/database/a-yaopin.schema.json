@@ -1,0 +1,123 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "存储文档 ID（商品 ID），系统自动生成"
+		},
+		"category_id": {
+			"bsonType": "string",
+			"description": "分类 id，参考`opendb-mall-categories`表",
+			"foreignKey": "opendb-mall-categories._id"
+		},
+		"goods_sn": {
+			"bsonType": "string",
+			"description": "商品的唯一货号",
+			"title": "货号",
+			"trim": "both"
+		},
+		"name": {
+			"bsonType": "string",
+			"description": "药名",
+			"title": "名称",
+			"trim": "both"
+		},
+		"keywords": {
+			"bsonType": "string",
+			"description": "商品关键字，为搜索引擎收录使用",
+			"title": "关键字",
+			"trim": "both"
+		},
+		"guige": {
+			"bsonType": "string",
+			"description": "规格"
+		},
+		"src": {
+			"bsonType": "string",
+			"description": "商品缩略图，用于在列表或搜索结果中预览显示",
+			"title": "缩略图地址",
+			"pattern": "^(http:\/\/|https:\/\/|\/|.\/|@\/)\\S",
+			"trim": "both"
+		},
+		"jiage": {
+			"bsonType": "int",
+			"description": "商品价格"
+		},
+		"all_jiage": {
+			"bsonType": "int",
+			"description": "总价"
+		},
+		"huiyuanjia": {
+			"bsonType": "int",
+			"description": "会员价"
+		},
+		"all_kucun": {
+			"bsonType": "int",
+			"description": "库存数量",
+			"title": "库存数量"
+		},
+		"jixing": {
+			"bsonType": "string",
+			"description": "剂型",
+			"title": "剂型"
+		},
+		"danwei": {
+			"bsonType": "string",
+			"description": "单位"
+		},
+		"pihao": {
+			"bsonType": "string",
+			"description": "批号"
+		},
+		"month_xiaoliang": {
+			"bsonType": "int",
+			"description": "月销量"
+		},
+		"all_xiaoliang": {
+			"bsonType": "int",
+			"description": "总销量"
+		},
+		"bieming": {
+			"bsonType": "string",
+			"description": "别名"
+		},
+		"changjia": {
+			"bsonType": "string",
+			"description": "厂家"
+		},
+		"youxiaoqi": {
+			"bsonType": "timestamp",
+			"description": "有效期"
+		},
+		"shengchanriqi": {
+			"bsonType": "timestamp",
+			"description": "生产日期"
+		},
+		"is_on_sale": {
+			"bsonType": "bool",
+			"description": "是否上架销售",
+			"title": "是否上架"
+		},
+		"add_date": {
+			"bsonType": "timestamp",
+			"description": "添加时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		},
+		"last_modify_date": {
+			"bsonType": "timestamp",
+			"description": "最后修改时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	},
+	"version": "0.0.1"
+}
