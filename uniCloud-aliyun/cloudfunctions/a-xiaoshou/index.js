@@ -3,7 +3,10 @@
 const { type } = require("os");
 
 const db = uniCloud.database();
-const xiaoshouCollection = db.collection("a-yaopin");
+const yaopinCollection = db.collection("a-yaopin");
+const xiaoshouCollection = db.collection("a-xiaoshou");
+const dingdanCollection = db.collection("a-dingdan");
+
 
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
@@ -12,27 +15,55 @@ exports.main = async (event, context) => {
 		name,
 		bieming,
 		guige,
-		jiage,
-		huiyuanjia,
-		kucun,
-		danwei,
+		shengchandanwei,
+		jixing,
 		pihao,
-		month_xiaoliang,
-		all_xiaoliang,
-		changjia,
-		is_on_sale,
-		add_date,
-		_id
+		youxiaoqi,
+		shengchanriqi,
+		shuliang,
+		danjia,
+		danwei,
+		zognjia,
+		addTime,
+		addPeople,
+		_id,
+		// 订单的参数
+		shishou,//实收
+		zhonglei,//种类
+		buy_shuliang,//共多少件
+		shuoming,//说明
+		title,//支付方式
+		yingshou,//应收  -- 总价
+		zhaoling,//找零
+		zhifufangshi,//支付方式
 	} = event;
 	console.log(event)
 	// 根据 别名查询 销售的药品
 	switch (event.type){
 		case 'getListByID':
 			let getListByIDList;
-			getListByIDList = await xiaoshouCollection.where({
+			getListByIDList = await yaopinCollection.where({
 				"bieming":event.value
 			}).get();
 			return getListByIDList
+		case 'addDingdan':
+			// 创建订单
+			let addDingdanList = await xiaoshouCollection.add({
+				shishou,//实收
+				buy_shuliang,//共多少件
+				zhonglei,//几种药
+				shuoming,//说明
+				title,//支付方式
+				yingshou,//应收  -- 总价
+				zhaoling,//找零
+				zhifufangshi,//支付方式
+			});
+			return addDingdanList
+		case 'dingdanXQ':
+			//订单详情
+			let lists = event.list;
+			let dingdanXQList = await dingdanCollection.add(lists);
+			return dingdanXQList
 		default:
 			break;
 	}

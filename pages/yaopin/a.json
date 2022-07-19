@@ -1,0 +1,29 @@
+const db = cloud.database()
+const dbCmd = db.command
+const $ = db.command.aggregate
+let res = await db.collection('orders').aggregate()
+  .lookup({
+    from: 'books',
+    let: {
+      book_id: '$book'
+    },
+    pipeline: $.pipeline()
+      .match(
+        dbCmd.expr($.eq(['$_id', '$$book_id']))
+      )
+      .lookup({
+        from: 'authors',
+        let: {
+          author_id: '$author'
+        },
+        pipeline: $.pipeline()
+          .match(
+            dbCmd.expr($.eq(['$_id', '$$author_id']))
+          )
+          .done(),
+        as: 'authorList'
+      })
+      .done(),
+    as: 'bookList',
+  })
+  .end()

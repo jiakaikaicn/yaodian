@@ -17,48 +17,38 @@
 			<uni-table :loading="loading" border stripe :emptyText="$t('common.empty')">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
-					<uni-th width="150" align="center">商品名称</uni-th>
-					<!-- <uni-th width="100" align="center">别名</uni-th> -->
-					<uni-th width="100" align="center">种类</uni-th>
+					<uni-th width="150" align="center">药名</uni-th>
 					<uni-th width="60" align="center">规格</uni-th>
-					<uni-th width="60" align="center">价格</uni-th>
+					<uni-th width="100" align="center">生产单位</uni-th>
+					<uni-th width="100" align="center">有效期</uni-th>
+					<uni-th width="100" align="center">生产日期</uni-th>
 					<uni-th width="80" align="center">库存</uni-th>
-					<uni-th width="60" align="center">总价</uni-th>
-					<uni-th width="60" align="center">会员价</uni-th>
-					<uni-th width="60" align="center">生产单位</uni-th>
-					<uni-th width="80" align="center">批号</uni-th>
-					<uni-th width="80" align="center">剂型</uni-th>
-					<uni-th width="120" align="center">有效期</uni-th>
-                    <uni-th width="120" align="center">生产日期</uni-th>
-					<uni-th width="100" align="center">厂家</uni-th>
-					<!-- <uni-th width="100" align="center">是否上架</uni-th> -->
-					<uni-th width="120" align="center">添加时间</uni-th>
+					<uni-th width="80" align="center">单位</uni-th>
+					<uni-th width="120" align="center">单价</uni-th>
+                    <uni-th width="120" align="center">总价</uni-th>
+					<uni-th width="100" align="center">添加时间</uni-th>
+					<uni-th width="100" align="center">入库员</uni-th>
 					<uni-th width="300" align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item, index) in tableData" :key="index">
 					<uni-td align="center">{{ index + 1 }}</uni-td>
 					<uni-td align="center">{{ item.name }}</uni-td>
-					<!-- <uni-td align="center">{{ item.bieming }}</uni-td> -->
-					<uni-td align="center">{{ item.zhonglei }}</uni-td>
 					<uni-td align="center">{{ item.guige }}</uni-td>
-					<uni-td align="center">{{ item.jiage }}</uni-td>
-					<uni-td align="center">{{ item.kucun }}</uni-td>
-					<uni-td align="center">{{ (item.jiage * item.kucun) || 0}}</uni-td>
-					<uni-td align="center">{{ item.huiyuanjia }}</uni-td>
+					<uni-td align="center">{{ item.shengchandanwei }}</uni-td>
+					<uni-td align="center">{{ item.youxiaoqi}}</uni-td>
+					<uni-td align="center">{{ item.shengchanriqi }}</uni-td>
+					<uni-td align="center">{{ item.shuliang }}</uni-td>
 					<uni-td align="center">{{ item.danwei }}</uni-td>
-					<uni-td align="center">{{ item.pihao }}</uni-td>
-					<uni-td align="center">{{ item.jixing }}</uni-td>
-					<uni-td width="100" align="center">{{item.youxiaoqi}}</uni-td>
-                    <uni-td width="100" align="center">{{item.shengchanriqi}}</uni-td>
-					<uni-td align="center">{{ item.changjia }}</uni-td>
-					<!-- <uni-td width="100" align="center">{{ item.is_on_sale }}</uni-td> -->
-					<uni-td width="100" align="center">{{item.add_date}}</uni-td>
+					<uni-td align="center">{{ item.danjia }}</uni-td>
+					<uni-td align="center">{{item.zognjia}}</uni-td>
+                    <uni-td align="center">{{item.addTime}}</uni-td>
+					<uni-td align="center">{{ item.addPeople }}</uni-td>
 					<uni-td>
 						<view class="uni-group">
 							<button class="uni-button" size="mini" type="warn" @click="addKucunFn(item)">添加库存</button>
-							<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit', item)">{{ $t('common.button.edit') }}</button>
+							<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit', item)">修改药品基本信息</button>
 							<button class="uni-button" size="mini" type="warn" @click="gotoPage('del', item)">{{ $t('common.button.delete') }}</button>
-							<button class="uni-button" size="mini" type="warn" @click="gotoPage('detail', item)">详情</button>
+							<button class="uni-button" size="mini" type="primary" @click="gotoPage('detail', item)">详情</button>
 						</view>
 					</uni-td>
 				</uni-tr>
@@ -83,6 +73,11 @@
 </template>
 
 <script>
+	import {parseTime,addYaoPinJournal} from "@/common/utils/index.js";
+	import {
+		mapMutations,
+		mapState
+	} from 'vuex'
 export default {
 	data() {
 		return {
@@ -99,6 +94,12 @@ export default {
 			clickAddKucunObj: {} //记录点击的添加库存的数量
 		};
 	},
+	computed: {
+		...mapState('app', ['appName']),
+		...mapState('app', ['routes']),
+		...mapState('user', ['userInfo']),
+		...mapState('error', ['logs'])
+	},
 	onLoad() {
 		this.selectedIndexs = [];
 		this.getData(1);
@@ -113,11 +114,10 @@ export default {
 			this.$refs.popup.open();
 		},
 		dialogInputConfirm(value) {
-			var regPos = /^-?[0-9]*/; //判断是否是数字。
+			var regPos = /^-?[0-9]/; //判断是否是数字。
 			if(regPos.test(value) ){
 				value = value;
 			}else{
-				console.log(222);
 				uni.showToast({
 					title:'请输入数字（正数，负数）',
 					icon:"error"
@@ -125,13 +125,13 @@ export default {
 				return
 			}
 			let obj = this.clickAddKucunObj;
-			let { _id, kucun } = obj;
-			kucun = Number(kucun) + Number(value);
+			let { _id, shuliang } = obj;
+			shuliang = Number(shuliang) + Number(value);
 			uniCloud.callFunction({
 				name: 'a-yaopin',
 				data: {
 					_id,
-					kucun,
+					shuliang,
 					type: 'addKucun'
 				},
 				success: res => {
@@ -140,6 +140,8 @@ export default {
 					});
 					uni.hideLoading();
 					this.getData(1);
+					let yaopinID = _id;
+					addYaoPinJournal('add','添加库存',yaopinID);//添加操作日志
 				},
 				fail: err => {
 					console.log(err);
@@ -249,6 +251,8 @@ export default {
 					type: 'del'
 				},
 				success: res => {
+					let yaopinID = id;
+					addYaoPinJournal('del','删除库存');//添加操作日志
 					uni.showToast({
 						title: '删除成功'
 					});
@@ -262,7 +266,8 @@ export default {
 					});
 				}
 			});
-		}
+		},
+		
 	}
 };
 </script>

@@ -66,6 +66,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/yaopin/journal/journal",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
     "subPackages": [{
         "root": "pages/system",

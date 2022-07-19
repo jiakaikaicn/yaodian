@@ -1,59 +1,65 @@
 <template>
 	<view class="uni-container">
 		<uni-forms :label-width="100" v-model="formData">
-			<uni-forms-item name="name" label="商品名称" required>
-				<uni-easyinput v-model="formData.name" :clearable="false" placeholder="请输入用户名" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="keywords" label="关键字" required>
-				<uni-easyinput v-model="formData.keywords" :clearable="false" placeholder="请输入关键字" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="bieming" label="别名">
-				<uni-easyinput v-model="formData.bieming" :clearable="false" placeholder="请输入别名" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="guige" label="规格" required>
-				<uni-easyinput v-model="formData.guige" :clearable="false" placeholder="请输入关键字" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="jiage" label="商品价格">
-				<uni-easyinput v-model="formData.jiage" :clearable="false" placeholder="请输入手机号" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="huiyuanjia" label="会员价">
-				<uni-easyinput v-model="formData.huiyuanjia" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			
-			<uni-forms-item name="all_kucun" label="库存数量">
-				<uni-easyinput v-model="formData.all_kucun" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="danwei" label="会员价">
-				<uni-easyinput v-model="formData.danwei" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="huiyuanjia" label="会员价">
-				<uni-easyinput v-model="formData.huiyuanjia" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="pihao" label="会员价">
-				<uni-easyinput v-model="formData.pihao" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="month_xiaoliang" label="月销量">
-				<uni-easyinput v-model="formData.month_xiaoliang" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="all_xiaoliang" label="总销量">
-				<uni-easyinput v-model="formData.all_xiaoliang" :clearable="false" placeholder="请输入邮箱" disabled />
-			</uni-forms-item>
-			
-			<uni-forms-item name="changjia" label="厂家">
-				<uni-easyinput v-model="formData.changjia" :clearable="false" placeholder="请输入厂家" disabled />
-			</uni-forms-item>
-			
-			
-			
-			<uni-forms-item name="is_on_sale" label="是否上架销售">
-				<switch @change="binddata('is_on_sale', $event.detail.value)" :checked="formData.is_on_sale" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="add_date" label="添加时间">
-				<uni-easyinput v-model="formData.add_date" :clearable="false" placeholder="请输入添加时间" disabled />
-			</uni-forms-item>
-			<uni-forms-item name="last_modify_date" label="最后修改时间">
-				<uni-easyinput v-model="formData.last_modify_date" :clearable="false" placeholder="请输入最后修改时间" disabled />
-			</uni-forms-item>
+			<view class="itemDiv">
+				<uni-forms-item name="name" label="药名" required>
+					<uni-easyinput v-model="formData.name" :clearable="false" placeholder="请输入药名" disabled />
+				</uni-forms-item>
+				<uni-forms-item name="bieming" label="别名" required>
+					<uni-easyinput v-model="formData.bieming" :clearable="false" placeholder="请输入别名" disabled />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="guige" label="规格" required>
+					<uni-easyinput v-model="formData.guige" :clearable="false" placeholder="请输入规格" disabled />
+				</uni-forms-item>
+				<uni-forms-item name="shengchandanwei" label="生产单位">
+					<uni-easyinput v-model="formData.shengchandanwei" :clearable="false" placeholder="请输入生产单位" disabled />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="jixing" label="剂型">
+					<uni-easyinput v-model="formData.jixing" :clearable="false" placeholder="请输入剂型" disabled />
+				</uni-forms-item>
+				<uni-forms-item name="pihao" label="批号">
+					<uni-easyinput v-model="formData.pihao" :clearable="false" placeholder="请输入批号" disabled />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="youxiaoqi" label="有效期">
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.youxiaoqi"disabled />
+					<!-- <uni-easyinput v-model="formData.youxiaoqi" :clearable="false" placeholder="请输入有效期" disabled /> -->
+				</uni-forms-item>
+				<uni-forms-item name="shengchanriqi" label="生产日期">
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.shengchanriqi"disabled />
+					<!-- <uni-easyinput v-model="formData.shengchanriqi" :clearable="false" placeholder="请输入生产日期" disabled /> -->
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="shuliang" label="数量">
+					<uni-easyinput type="number" v-model="formData.shuliang" :clearable="false" placeholder="请输入数量" disabled />
+				</uni-forms-item>
+				<uni-forms-item name="danwei" label="单位">
+					<uni-easyinput v-model="formData.danwei" :clearable="false" placeholder="请输入单位" disabled />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="danjia" label="单价">
+					<uni-easyinput type="number" v-model="formData.danjia" :clearable="false" placeholder="请输入单价" disabled />
+				</uni-forms-item>
+				<uni-forms-item name="zognjia" label="总价">
+					<uni-easyinput type="number" v-model="formData.zognjia" :clearable="false" placeholder="请输入总价" disabled />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="addTime" label="添加时间">
+					<!-- <uni-easyinput v-model="formData.add_date" :clearable="false" placeholder="请输入添加时间" disabled /> -->
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.addTime"disabled />
+				</uni-forms-item>
+				<uni-forms-item name="addPeople" label="入库员">
+					<uni-easyinput disabled v-model="formData.addPeople" :clearable="false" placeholder="请输入入库员" disabled />
+				</uni-forms-item>
+			</view>
 			
 		</uni-forms>
 	</view>
@@ -68,17 +74,17 @@
 					name:'',
 					bieming:'',
 					guige:'',
-					jiage:'',
-					huiyuanjia:'',
-					kucun:'',
-					danwei:'',
+					shengchandanwei:'',
+					jixing:'',
 					pihao:'',
-					month_xiaoliang:'',
-					all_xiaoliang:'',
-					changjia:'',
-					is_on_sale:'',
-					add_date:'',
-					last_modify_date:'',
+					youxiaoqi:'',
+					shengchanriqi:'',
+					shuliang:'',
+					danjia:'',
+					danwei:'',
+					zognjia:'',
+					addTime:'',
+					addPeople:'',
 				},
 			}
 		},
@@ -111,6 +117,17 @@
 	}
 </script>
 
-<style>
-
+<style scoped lang="less">
+	/deep/.uni-forms{
+		max-width: 1200px !important;
+		.itemDiv{
+			display: flex;
+			.uni-forms-item{
+				flex: 1;
+				padding: 0 40px 0 0;
+			}
+		}
+	}
 </style>
+
+

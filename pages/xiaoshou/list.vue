@@ -3,9 +3,7 @@
 		<view class="uni-header">
 			<view class="uni-group hide-on-phone">
 				<view class="uni-title">销售</view>
-				{{selectedIndexs}}
 			</view>
-
 		</view>
 		<view>
 			<view class="uni-group">
@@ -19,45 +17,25 @@
 				<uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange">
 					<uni-tr>
 						<uni-th width="40" align="center">ID</uni-th>
-						<uni-th width="150" align="center">商品名称</uni-th>
-						<uni-th width="100" align="center">种类</uni-th>
+						<uni-th width="150" align="center">药名</uni-th>
 						<uni-th width="60" align="center">规格</uni-th>
-						<uni-th width="60" align="center">价格</uni-th>
+						<uni-th width="100" align="center">生产单位</uni-th>
+						<uni-th width="100" align="center">有效期</uni-th>
+						<uni-th width="100" align="center">生产日期</uni-th>
 						<uni-th width="80" align="center">库存</uni-th>
-						<uni-th width="60" align="center">总价</uni-th>
-						<uni-th width="60" align="center">会员价</uni-th>
-						<uni-th width="60" align="center">生产单位</uni-th>
-						<uni-th width="80" align="center">批号</uni-th>
-						<uni-th width="80" align="center">剂型</uni-th>
-						<uni-th width="120" align="center">有效期</uni-th>
-						<uni-th width="120" align="center">生产日期</uni-th>
-						<uni-th width="100" align="center">厂家</uni-th>
-						<uni-th width="120" align="center">添加时间</uni-th>
-						<!-- <uni-th width="300" align="center">操作</uni-th> -->
+						<uni-th width="80" align="center">单位</uni-th>
+						<uni-th width="120" align="center">单价</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in popupTableData" :key="index">
 						<uni-td align="center">{{ index + 1 }}</uni-td>
 						<uni-td align="center">{{ item.name }}</uni-td>
-						<uni-td align="center">{{ item.zhonglei }}</uni-td>
 						<uni-td align="center">{{ item.guige }}</uni-td>
-						<uni-td align="center">{{ item.jiage }}</uni-td>
-						<uni-td align="center">{{ item.kucun }}</uni-td>
-						<uni-td align="center">{{ (item.jiage * item.kucun) || 0}}</uni-td>
-						<uni-td align="center">{{ item.huiyuanjia }}</uni-td>
+						<uni-td align="center">{{ item.shengchandanwei }}</uni-td>
+						<uni-td align="center">{{ item.youxiaoqi}}</uni-td>
+						<uni-td align="center">{{ item.shengchanriqi }}</uni-td>
+						<uni-td align="center">{{ item.shuliang }}</uni-td>
 						<uni-td align="center">{{ item.danwei }}</uni-td>
-						<uni-td align="center">{{ item.pihao }}</uni-td>
-						<uni-td align="center">{{ item.jixing }}</uni-td>
-						<uni-td width="100" align="center">{{item.youxiaoqi}}</uni-td>
-						<uni-td width="100" align="center">{{item.shengchanriqi}}</uni-td>
-						<uni-td align="center">{{ item.changjia }}</uni-td>
-						<uni-td width="100" align="center">{{item.add_date}}</uni-td>
-						<!-- <uni-td>
-							<view class="uni-group">
-								<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit', item)">{{ $t('common.button.edit') }}</button>
-								<button class="uni-button" size="mini" type="warn" @click="gotoPage('del', item)">{{ $t('common.button.delete') }}</button>
-								<button class="uni-button" size="mini" type="warn" @click="gotoPage('detail', item)">详情</button>
-							</view>
-						</uni-td> -->
+						<uni-td align="center">{{ item.danjia }}</uni-td>
 					</uni-tr>
 				</uni-table>
 				<view class="uni-pagination-box">
@@ -72,8 +50,6 @@
 		</uni-popup>
 
 		<view class="uni-container">
-			{{tableData}}
-			{{tableData.length}}
 			<!-- 按钮 -->
 			<view class="uni-group">
 				<button :disabled="tableData.length > 0 ? false: true" class="uni-button" size="mini" type="primary" @click="gotoPage('结算订单')">结算订单</button>
@@ -82,38 +58,32 @@
 			<uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
-					<uni-th width="150" align="center">商品名称</uni-th>
-					<uni-th width="100" align="center">种类</uni-th>
+					<uni-th width="150" align="center">药名</uni-th>
 					<uni-th width="60" align="center">规格</uni-th>
-					<uni-th width="60" align="center">价格</uni-th>
-					<uni-th width="60" align="center">折扣价</uni-th>
-					<uni-th width="80" align="center">数量</uni-th>
-					<uni-th width="60" align="center">单位</uni-th>
-					<uni-th width="80" align="center">批号</uni-th>
-					<uni-th width="80" align="center">剂型</uni-th>
-					<uni-th width="120" align="center">有效期</uni-th>
-					<uni-th width="120" align="center">生产日期</uni-th>
-					<uni-th width="100" align="center">厂家</uni-th>
-					<uni-th width="120" align="center">添加时间</uni-th>
+					<uni-th width="100" align="center">生产单位</uni-th>
+					<uni-th width="100" align="center">有效期</uni-th>
+					<uni-th width="100" align="center">生产日期</uni-th>
+					<uni-th width="80" align="center">库存</uni-th>
+					<uni-th width="80" align="center">购买数量</uni-th>
+					<uni-th width="80" align="center">单位</uni-th>
+					<uni-th width="120" align="center">单价</uni-th>
+					<uni-th width="80" align="center">折扣价</uni-th>
 					<uni-th width="60" align="center">总价</uni-th>
 					<uni-th width="300" align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item, index) in tableData" :key="index">
 					<uni-td align="center">{{ index + 1 }}</uni-td>
 					<uni-td align="center">{{ item.name }}</uni-td>
-					<uni-td align="center">{{ item.zhonglei }}</uni-td>
 					<uni-td align="center">{{ item.guige }}</uni-td>
-					<uni-td align="center">{{ item.jiage }}</uni-td>
-					<uni-td align="center">{{ item.new_jiage }}</uni-td>
+					<uni-td align="center">{{ item.shengchandanwei }}</uni-td>
+					<uni-td align="center">{{ item.youxiaoqi}}</uni-td>
+					<uni-td align="center">{{ item.shengchanriqi }}</uni-td>
 					<uni-td align="center">{{ item.shuliang }}</uni-td>
+					<uni-td align="center">{{ item.buy_shuliang }}</uni-td>
 					<uni-td align="center">{{ item.danwei }}</uni-td>
-					<uni-td align="center">{{ item.pihao }}</uni-td>
-					<uni-td align="center">{{ item.jixing }}</uni-td>
-					<uni-td width="100" align="center">{{item.youxiaoqi}}</uni-td>
-					<uni-td width="100" align="center">{{item.shengchanriqi}}</uni-td>
-					<uni-td align="center">{{ item.changjia }}</uni-td>
-					<uni-td width="100" align="center">{{item.add_date}}</uni-td>
-					<uni-td align="center">{{ (item.jiage * item.shuliang) || 0}}</uni-td>
+					<uni-td align="center">{{ item.danjia }}</uni-td>
+					<uni-td align="center">{{ item.new_jiage }}</uni-td>
+					<uni-td align="center">{{ (item.danjia * item.buy_shuliang) || 0}}</uni-td>
 					<uni-td>
 						<view class="uni-group">
 							<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit',item,index)">修改价格</button>
@@ -138,7 +108,7 @@
 				:beforeClose="true"
 				mode="input"
 				title="数量"
-				value=""
+				value="1"
 				placeholder="请输入要核销的盒数"
 				@confirm="dialogInputConfirm"
 				@close="closeFn('boxNumberBox')"
@@ -189,7 +159,7 @@
 		<!-- 现金收入 -->
 		<uni-popup ref="zhifuPopup" type="center">
 			<view class="zhifuPopupDiv">
-				<view class="title">{{baseFormData.title}}</view>
+				<view class="title">{{baseFormData.zhifufangshi}}</view>
 				<view class="formDataDiv">
 					<uni-forms ref="baseForm" :modelValue="baseFormData" :label-width="80">
 						<uni-forms-item label="方式" required>
@@ -200,19 +170,19 @@
 						</uni-forms-item>
 						<view v-show="baseFormData.title == '现金支付'">
 							<uni-forms-item label="实收" required>
-								<uni-easyinput v-model="baseFormData.shishou" />
+								<uni-easyinput type="number" v-model="baseFormData.shishou" />
 							</uni-forms-item>
 							<uni-forms-item label="找零">
 								<uni-easyinput v-model="baseFormData.zhaoling" disabled/>
 							</uni-forms-item>
 						</view>
 						<uni-forms-item label="说明">
-							<uni-easyinput type="number" v-model="baseFormData.shuoming" />
+							<uni-easyinput v-model="baseFormData.shuoming" />
 						</uni-forms-item>
 					</uni-forms>
 					<view class="uni-group">
 						<button class="uni-button" size="mini" type="primary" @click="gotoPage('结算')">结算</button>
-						<button class="uni-button" size="mini" type="warn" @click="gotoPage('重新选择')">重新选择</button>
+						<button class="uni-button" size="mini" type="warn" @click="gotoPage('重新选择')">重新选择支付方式</button>
 					</view>
 				</view>
 			</view>
@@ -261,13 +231,15 @@
 					iconSrc: 'icon-zhifu1',
 				}],
 				baseFormData:{
-					title:'',
 					zhifufangshi:'',
 					yingshou:0,
 					shishou:0,
-					zhaoling:'',
-					shuoming:0,
-				}
+					zhaoling:0,
+					shuoming:'',
+					// 数量
+					buy_shuliang:'',
+				},
+				dingdanList:[],//订单的详情
 			};
 		},
 		// 监听现金支付的时候，计算找零
@@ -292,7 +264,12 @@
 								title: "请最少选择一个药品进行结算",
 								icon: "error"
 							})
-						} else {
+						} else if(this.selectedIndexs.length > 1){
+							uni.showToast({
+								title: "你只能一次选择一个药品进行结算",
+								icon: "error"
+							})
+						} else{
 							// this.close();
 							// 弹出输入盒数
 							this.$refs.boxNumberBox.open();
@@ -314,47 +291,31 @@
 						break;
 					case '取消订单':
 						console.log('取消订单');
+						this.tableData = [];
 						break;
 					case '结算':
 						console.log('结算');
 						var regPos = /^-?[0-9]/; //判断是否是数字。
-						if(regPos.test(this.baseFormData.zhaoling) && regPos.test(this.baseFormData.yingshou)){
-							console.log('是数字');
-							if(this.baseFormData.zhaoling < 0){
+						if(this.baseFormData.title == '现金支付'){
+							if(regPos.test(this.baseFormData.zhaoling) && regPos.test(this.baseFormData.yingshou)){
+								console.log('是数字');
+								if(this.baseFormData.zhaoling < 0){
+									uni.showToast({
+										title:'请确认找零是否正确',
+										icon:"error"
+									})
+								}else{
+									this.jiesuanFn();
+									console.log('正式结算')
+								}
+							}else{
 								uni.showToast({
-									title:'请确认找零是否正确',
+									title:'数据有误，请重新操作一遍',
 									icon:"error"
 								})
-							}else{
-								let data = {
-									id:'',
-									...this.baseFormData,
-									shuliang:this.tableData.length,
-									lsit:[
-										...this.tableData
-									]
-								};
-								console.log(data);
-								return;
-								console.log(data);
-								uniCloud.callFunction({
-									name:'',
-									data,
-									success: (res) => {
-										console.log(res);
-									},
-									fail: (err) => {
-										console.log(err);
-									}
-								})
-								console.log('正式结算')
 							}
-						}else{
-							uni.showToast({
-								title:'数据有误，请重新操作一遍',
-								icon:"error"
-							})
 						}
+						this.jiesuanFn();
 						break;
 					case '重新选择':
 						console.log('重新选择支付方式');
@@ -413,7 +374,7 @@
 				var regPos = /^[0-9]/; //判断是否是数字。
 				if(regPos.test(value)){
 					// 判断与库存的关系
-					if(value > this.changList.kucun){//大于库存
+					if(value > this.changList.shuliang){//大于库存
 						uni.showToast({
 							title:'库存不够，请联系入库员添加',
 							icon:"error"
@@ -423,8 +384,7 @@
 						this.$refs.boxNumberBox.close();
 						this.$refs.popup.close();
 						this.tableData = this.tableData.concat(this.popupTableData[this.selectedIndexs]);
-						let obj = this.tableData[this.selectedIndexs].shuliang = value;
-						this.$set(this.tableData[this.selectedIndexs],obj,obj);
+						this.$set(this.tableData[this.selectedIndexs], "buy_shuliang",Number(value))
 					}
 				}else{
 					uni.showToast({
@@ -445,6 +405,12 @@
 					case 'editJiageBox':
 						this.$refs.editJiageBox.close();
 						break;
+					case 'all':
+						this.$refs.ercimimaBox.close();
+						this.$refs.boxNumberBox.close();
+						this.$refs.editJiageBox.close();
+						this.$refs.zhifuPopup.close();
+						this.$refs.jiesuanPopupBox.close();
 					default:
 						break;
 				}
@@ -466,8 +432,7 @@
 					case 'editJiageBox':
 						console.log('修改后的价格',value);
 						// 获取点击的是那一条数据
-						let obj = this.tableData[this.clickListIndex].new_jiage = value;
-						this.$set(this.tableData[this.clickListIndex],obj,obj);
+						this.$set(this.tableData[this.clickListIndex], "new_jiage",Number(value))
 						this.closeFn('editJiageBox')
 						break;
 					default:
@@ -475,13 +440,84 @@
 				}
 			},
 			countFn(){
-				console.log('开始计算总价');
-				let all_jiage = 0;
+				console.log('开始计算总价，数量');
+				console.log(this.tableData);
+				let all_jiage = 0,all_shuliang = 0,dingdanList=[];
 				this.tableData.forEach((item)=>{
 					//如果有折扣价
-					all_jiage += Number(item.new_jiage ? item.new_jiage : item.jiage) * Number(item.shuliang);
+					let obj={};
+					all_jiage += Number(item.new_jiage ? item.new_jiage : item.danjia) * Number(item.buy_shuliang);
+					all_shuliang += Number(item.buy_shuliang);
+					obj.yaopinID = item._id;
+					obj.buy_shuliang = item.buy_shuliang;
+					obj.new_jiage = item.new_jiage ? item.new_jiage : item.danjia;
+					obj.zongjia = Number(obj.new_jiage) * Number(obj.buy_shuliang);
+					dingdanList.push(obj);
 				})
 				this.baseFormData.yingshou = all_jiage;
+				this.baseFormData.buy_shuliang = all_shuliang;
+				this.dingdanList = dingdanList;
+			},
+			// 结算保存数据
+			jiesuanFn(){
+				let that = this;
+				let data = {
+					type:'addDingdan',
+					...this.baseFormData,
+					zhonglei:this.tableData.length,
+					lsit:[
+						...this.tableData
+					]
+				};
+				console.log(data);
+				uniCloud.callFunction({
+					name:'a-xiaoshou',
+					data,
+					success: (res) => {
+						console.log(res);
+						let re = res;
+						uni.showModal({
+							title: '提示',
+							content: '结算成功',
+							showCancel: false,
+							success: function(res) {
+								let xiaoshouID = re.result.id;
+								if (res.confirm) {
+									that.closeFn('all');
+									// that.tableData = [];
+									// that.popupTableData = [];
+									that.dingdanXiangqing(xiaoshouID);
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+								}
+							}
+						});
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
+			},
+			// 订单详情操作
+			dingdanXiangqing(xiaoshouID){
+				let lists = this.dingdanList;
+				for (var i = 0; i < lists.length; i++) {
+					lists[i].dingdanID = xiaoshouID;//添加订单id
+				}
+				let data = {
+					type:'dingdanXQ',
+					list:lists
+				}
+				uniCloud.callFunction({
+					name:'a-xiaoshou',
+					data,
+					success: (res) => {
+						console.log(res);
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
 			}
 		}
 	};

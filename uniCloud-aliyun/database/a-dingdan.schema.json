@@ -1,0 +1,27 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"yaopinID": {
+			"description": "药品id 关联yaopin表的id"
+		},
+		"shuliang": {
+			"description": "本次订单的本药品的数量"
+		},
+		"new_jiage": {
+			"description": "本次订单的本药品的单价"
+		},
+		"zongjia":{
+			"description": "本次订单的本药品的总价"
+		}
+	}
+}

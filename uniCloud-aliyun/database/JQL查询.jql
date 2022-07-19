@@ -10,3 +10,6 @@
 
 // 下面示例查询uni-id-users表的所有数据
 db.collection('uni-id-users').get();
+let lists = [{"yaopinID":"62cce9c5d320910001416263","shuliang":"12","new_jiage":"50","zongjia":600},{"yaopinID":"62ce2598f17d020001fbfcc0","shuliang":"2","new_jiage":"50","zongjia":100}]
+db.collection("a-dingdan").add(lists)
+

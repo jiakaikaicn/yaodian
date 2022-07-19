@@ -1,55 +1,65 @@
 <template>
 	<view class="uni-container">
 		<uni-forms ref="form" :label-width="100" v-model="formData" :rules="rules" validateTrigger="bind" @submit="submit">
-			<uni-forms-item name="name" label="商品名称" required>
-				<uni-easyinput v-model="formData.name" :clearable="false" placeholder="请输入用户名"/>
-			</uni-forms-item>
-			<uni-forms-item name="keywords" label="关键字" required>
-				<uni-easyinput v-model="formData.keywords" :clearable="false" placeholder="请输入关键字"/>
-			</uni-forms-item>
-			<uni-forms-item name="bieming" label="别名">
-				<uni-easyinput v-model="formData.bieming" :clearable="false" placeholder="请输入别名"/>
-			</uni-forms-item>
-			<uni-forms-item name="guige" label="规格" required>
-				<uni-easyinput v-model="formData.guige" :clearable="false" placeholder="请输入关键字"/>
-			</uni-forms-item>
-			<uni-forms-item name="jiage" label="商品价格">
-				<uni-easyinput v-model="formData.jiage" :clearable="false" placeholder="请输入手机号"/>
-			</uni-forms-item>
-			<uni-forms-item name="huiyuanjia" label="会员价">
-				<uni-easyinput v-model="formData.huiyuanjia" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item>
-			
-			<uni-forms-item name="all_kucun" label="库存数量">
-				<uni-easyinput v-model="formData.all_kucun" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item>
-			<uni-forms-item name="danwei" label="会员价">
-				<uni-easyinput v-model="formData.danwei" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item>
-			<uni-forms-item name="huiyuanjia" label="会员价">
-				<uni-easyinput v-model="formData.huiyuanjia" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item>
-			<uni-forms-item name="pihao" label="会员价">
-				<uni-easyinput v-model="formData.pihao" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item>
-		<!-- 	<uni-forms-item name="month_xiaoliang" label="月销量">
-				<uni-easyinput v-model="formData.month_xiaoliang" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item>
-			<uni-forms-item name="all_xiaoliang" label="总销量">
-				<uni-easyinput v-model="formData.all_xiaoliang" :clearable="false" placeholder="请输入邮箱"/>
-			</uni-forms-item> -->
-			<uni-forms-item name="changjia" label="厂家">
-				<uni-easyinput v-model="formData.changjia" :clearable="false" placeholder="请输入厂家"/>
-			</uni-forms-item>
-			<uni-forms-item name="is_on_sale" label="是否上架销售">
-				<switch @change="binddata('is_on_sale', $event.detail.value)" :checked="formData.is_on_sale"/>
-			</uni-forms-item>
-			<uni-forms-item name="add_date" label="添加时间">
-				<uni-easyinput v-model="formData.add_date" :clearable="false" placeholder="请输入添加时间"/>
-			</uni-forms-item>
-			<uni-forms-item name="last_modify_date" label="最后修改时间">
-				<uni-easyinput v-model="formData.last_modify_date" :clearable="false" placeholder="请输入最后修改时间"/>
-			</uni-forms-item>
+			<view class="itemDiv">
+				<uni-forms-item name="name" label="药名" required>
+					<uni-easyinput v-model="formData.name" :clearable="false" placeholder="请输入药名" />
+				</uni-forms-item>
+				<uni-forms-item name="bieming" label="别名" required>
+					<uni-easyinput v-model="formData.bieming" :clearable="false" placeholder="请输入别名" />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="guige" label="规格" required>
+					<uni-easyinput v-model="formData.guige" :clearable="false" placeholder="请输入规格" />
+				</uni-forms-item>
+				<uni-forms-item name="shengchandanwei" label="生产单位">
+					<uni-easyinput v-model="formData.shengchandanwei" :clearable="false" placeholder="请输入生产单位" />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="jixing" label="剂型">
+					<uni-easyinput v-model="formData.jixing" :clearable="false" placeholder="请输入剂型" />
+				</uni-forms-item>
+				<uni-forms-item name="pihao" label="批号">
+					<uni-easyinput v-model="formData.pihao" :clearable="false" placeholder="请输入批号" />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="youxiaoqi" label="有效期">
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.youxiaoqi"/>
+					<!-- <uni-easyinput v-model="formData.youxiaoqi" :clearable="false" placeholder="请输入有效期" /> -->
+				</uni-forms-item>
+				<uni-forms-item name="shengchanriqi" label="生产日期">
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.shengchanriqi"/>
+					<!-- <uni-easyinput v-model="formData.shengchanriqi" :clearable="false" placeholder="请输入生产日期" /> -->
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="shuliang" label="数量">
+					<uni-easyinput type="number" v-model="formData.shuliang" :clearable="false" placeholder="请输入数量" disabled/>
+				</uni-forms-item>
+				<uni-forms-item name="danwei" label="单位">
+					<uni-easyinput v-model="formData.danwei" :clearable="false" placeholder="请输入单位" />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="danjia" label="单价">
+					<uni-easyinput type="number" v-model="formData.danjia" :clearable="false" placeholder="请输入单价" disabled/>
+				</uni-forms-item>
+				<uni-forms-item name="zognjia" label="总价">
+					<uni-easyinput type="number" v-model="formData.zognjia" :clearable="false" placeholder="请输入总价" disabled/>
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="addTime" label="添加时间">
+					<!-- <uni-easyinput v-model="formData.add_date" :clearable="false" placeholder="请输入添加时间" /> -->
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.addTime" disabled/>
+				</uni-forms-item>
+				<uni-forms-item name="addPeople" label="入库员">
+					<uni-easyinput disabled v-model="userInfo.username" :clearable="false" placeholder="请输入入库员" />
+				</uni-forms-item>
+			</view>
 			
 			
 			<view class="uni-button-group">
@@ -61,6 +71,11 @@
 </template>
 
 <script>
+	import {parseTime,addYaoPinJournal} from "@/common/utils/index.js";
+	import {
+		mapMutations,
+		mapState
+	} from 'vuex'
 	import {
 		validator
 	} from '@/js_sdk/validator/uni-id-users.js';
@@ -86,17 +101,17 @@
 					name:'',
 					bieming:'',
 					guige:'',
-					jiage:'',
-					huiyuanjia:'',
-					kucun:'',
-					danwei:'',
+					shengchandanwei:'',
+					jixing:'',
 					pihao:'',
-					// month_xiaoliang:'',
-					// all_xiaoliang:'',
-					changjia:'',
-					is_on_sale:'',
-					add_date:'',
-					last_modify_date:'',
+					youxiaoqi:'',
+					shengchanriqi:'',
+					shuliang:'',
+					danjia:'',
+					danwei:'',
+					zognjia:'',
+					addTime:'',
+					addPeople:'',
 				},
 				rules: {
 					...getValidator(["name", "jiage"]),
@@ -109,6 +124,12 @@
 				roles: []
 			}
 		},
+		computed: {
+			...mapState('app', ['appName']),
+			...mapState('app', ['routes']),
+			...mapState('user', ['userInfo']),
+			...mapState('error', ['logs'])
+		},
 		onLoad(option) {
 			const item = JSON.parse(decodeURIComponent(option.item));
 			this.formData = item;
@@ -120,7 +141,22 @@
 			 * 触发表单提交
 			 */
 			submitForm() {
-				this.$refs.form.submit();
+				console.log(this.userInfo);
+				this.formData.addPeople = this.userInfo.username;
+				console.log(this.formData);
+				let that = this;
+				uni.showModal({
+					title: '提示',
+					content: '是否确定提交',
+					success: function(res) {
+						if (res.confirm) {
+							that.$refs.form.submit();
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+				// this.$refs.form.submit();
 			},
 			submit(event){
 				console.log(event);
@@ -151,6 +187,8 @@
 					name:"a-yaopin",
 					data:data,success: (res) => {
 						console.log(res);
+						let yaopinID = this.formData._id;
+						addYaoPinJournal('edit','更新药品信息',yaopinID);//添加操作日志
 						uni.showToast({
 							title: '更新成功',
 							duration:3000,
@@ -174,6 +212,16 @@
 	}
 </script>
 
-<style>
-
+<style scoped lang="less">
+	/deep/.uni-forms{
+		max-width: 1200px !important;
+		.itemDiv{
+			display: flex;
+			.uni-forms-item{
+				flex: 1;
+				padding: 0 40px 0 0;
+			}
+		}
+	}
 </style>
+
