@@ -48,8 +48,9 @@ export function parseTime(time, cFormat) {
 // shuoming：操作说明
 // yaopinID: 操作的数据id
 
-export function addYaoPinJournal(operationType, shuoming, yaopinID) {
+export function addYaoPinJournal(operationType, shuoming, yaopinID,addKucunNum) {
 	console.log('添加入库的日志');
+	console.log(addKucunNum);
 	let time = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}"); //获取当前系统时间
 	let people = uni.getStorageSync('lastUsername');; //获取当前操作人
 	let data = {
@@ -58,7 +59,8 @@ export function addYaoPinJournal(operationType, shuoming, yaopinID) {
 		time,
 		operationType,
 		shuoming,
-		yaopinID
+		yaopinID,
+		addKucunNum
 	}
 	console.log(data);
 	uniCloud.callFunction({

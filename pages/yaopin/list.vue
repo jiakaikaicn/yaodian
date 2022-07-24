@@ -8,12 +8,10 @@
 				<input class="uni-search" type="text" v-model="searchVal" @confirm="search" placeholder="请输入商品名称" />
 				<button class="uni-button" type="default" size="mini" @click="search">{{ $t('common.button.search') }}</button>
 				<button class="uni-button" type="primary" size="mini" @click="gotoPage('add')">{{ $t('common.button.add') }}</button>
-				<!-- <button class="uni-button" type="warn" size="mini" @click="delTable">{{$t('common.button.batchDelete')}}</button> -->
 			</view>
 		</view>
 		
 		<view class="uni-container">
-			<!-- <uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange"> -->
 			<uni-table :loading="loading" border stripe :emptyText="$t('common.empty')">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
@@ -113,6 +111,7 @@ export default {
 			this.clickAddKucunObj = item;
 			this.$refs.popup.open();
 		},
+		// 添加库存
 		dialogInputConfirm(value) {
 			var regPos = /^-?[0-9]/; //判断是否是数字。
 			if(regPos.test(value) ){
@@ -141,7 +140,8 @@ export default {
 					uni.hideLoading();
 					this.getData(1);
 					let yaopinID = _id;
-					addYaoPinJournal('add','添加库存',yaopinID);//添加操作日志
+					let addKucunNum = value;
+					addYaoPinJournal('add','添加库存',yaopinID,addKucunNum);//添加操作日志
 				},
 				fail: err => {
 					console.log(err);
@@ -150,19 +150,6 @@ export default {
 					});
 				}
 			});
-		},
-		// 多选处理
-		selectedItems() {
-			return this.selectedIndexs.map(i => this.tableData[i]);
-		},
-		// 多选
-		selectionChange(e) {
-			console.log(e.detail.index);
-			this.selectedIndexs = e.detail.index;
-		},
-		//批量删除
-		delTable() {
-			console.log(this.selectedItems());
 		},
 		// 分页触发
 		change(e) {
@@ -202,6 +189,7 @@ export default {
 				}
 			});
 		},
+		// 点击操作
 		gotoPage(name, item) {
 			console.log(name);
 			console.log(item);
@@ -252,7 +240,7 @@ export default {
 				},
 				success: res => {
 					let yaopinID = id;
-					addYaoPinJournal('del','删除库存');//添加操作日志
+					addYaoPinJournal('del','删除库存',yaopinID);//添加操作日志
 					uni.showToast({
 						title: '删除成功'
 					});
@@ -267,7 +255,6 @@ export default {
 				}
 			});
 		},
-		
 	}
 };
 </script>

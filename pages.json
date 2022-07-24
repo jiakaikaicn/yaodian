@@ -70,7 +70,16 @@
             "path" : "pages/yaopin/journal/journal",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "日志",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/yaopin/journal/details/details",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "日志详情",
                 "enablePullDownRefresh": false
             }
             

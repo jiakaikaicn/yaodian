@@ -31,7 +31,8 @@ exports.main = async (event, context) => {
 		time,
 		operationType,
 		shuoming,
-		yaopinID
+		yaopinID,
+		addKucunNum
 	} = event;
 	let {
 		page,
@@ -119,7 +120,8 @@ exports.main = async (event, context) => {
 				time,
 				operationType,
 				shuoming,
-				yaopinID
+				yaopinID,
+				addKucunNum
 			});
 			// 日志查询
 		case 'journalList':
@@ -141,16 +143,16 @@ exports.main = async (event, context) => {
 				total
 			};
 			return resArr
-		case 'ceshiduobiao':
-			let ress = await yaopinJournalCollection.aggregate()
-				.lookup({
-					from: as, //要联查哪个表
-					localField: 'yaopinID', //本表字段
-					foreignField: '_id', //关联字段
-					as: 'yaopin' //别名
-				}).fie
-				.end()
-			return ress
+		// case 'ceshiduobiao':
+		// 	let ress = await yaopinJournalCollection.aggregate()
+		// 		.lookup({
+		// 			from: as, //要联查哪个表
+		// 			localField: 'yaopinID', //本表字段
+		// 			foreignField: '_id', //关联字段
+		// 			as: 'yaopin' //别名
+		// 		}).fie
+		// 		.end()
+		// 	return ress
 	}
 
 };

@@ -17,6 +17,7 @@
 					<uni-th width="150" align="center">操作类型</uni-th>
 					<uni-th width="100" align="center">操作人</uni-th>
 					<uni-th width="100" align="center">操作时间</uni-th>
+					<uni-th width="100" align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item, index) in tableData" :key="index">
 					<uni-td align="center">{{ index + 1 }}</uni-td>
@@ -24,6 +25,11 @@
 					<uni-td align="center">{{ item.operationType | operationTypeText }}</uni-td>
 					<uni-td align="center">{{ item.people}}</uni-td>
 					<uni-td align="center">{{ item.time }}</uni-td>
+					<uni-td align="center">
+						<view class="uni-group">
+							<button class="uni-button" size="mini" type="primary" @click="gotoPage('detail', item)">详情</button>
+						</view>
+					</uni-td>
 				</uni-tr>
 			</uni-table>
 			<view class="uni-pagination-box">
@@ -71,7 +77,7 @@
 		onLoad() {
 			this.selectedIndexs = [];
 			this.getData(1);
-			this.ceshi();
+			// this.ceshi();
 		},
 		methods: {
 			// 分页触发
@@ -119,6 +125,12 @@
 					fail: err => {
 						console.log(err);
 					}
+				});
+			},
+			// 点击详情
+			gotoPage(name,item){
+				uni.navigateTo({
+					url: 'details/details?item=' + encodeURIComponent(JSON.stringify(item)),
 				});
 			},
 			ceshi() {
