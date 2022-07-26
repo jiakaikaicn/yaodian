@@ -10,7 +10,7 @@
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
-				<uni-forms-item name="guige" label="规格" required>
+				<uni-forms-item name="guige" label="规格">
 					<uni-easyinput v-model="formData.guige" :clearable="false" placeholder="请输入规格" />
 				</uni-forms-item>
 				<uni-forms-item name="shengchandanwei" label="生产单位">
@@ -36,7 +36,7 @@
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
-				<uni-forms-item name="shuliang" label="数量">
+				<uni-forms-item name="shuliang" label="数量" required>
 					<uni-easyinput type="number" v-model="formData.shuliang" :clearable="false" placeholder="请输入数量" />
 				</uni-forms-item>
 				<uni-forms-item name="danwei" label="单位">
@@ -44,11 +44,19 @@
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
-				<uni-forms-item name="danjia" label="单价">
-					<uni-easyinput type="number" v-model="formData.danjia" :clearable="false" placeholder="请输入单价" />
+				<uni-forms-item name="jinhuo_jia" label="进货价" required>
+					<uni-easyinput type="number" v-model="formData.jinhuo_jia" :clearable="false" placeholder="请输入单价" />
 				</uni-forms-item>
-				<uni-forms-item name="zognjia" label="总价">
-					<uni-easyinput type="number" v-model="formData.zognjia" :clearable="false" placeholder="请输入总价" />
+				<uni-forms-item name="xiaoshou_jia" label="售价" required>
+					<uni-easyinput type="number" v-model="formData.xiaoshou_jia" :clearable="false" placeholder="请输入进货价" />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="zongjia" label="总价">
+					<uni-easyinput type="number" v-model="formData.zongjia" :clearable="false" placeholder="请输入总价" />
+				</uni-forms-item>
+				<uni-forms-item>
+					<!-- <uni-easyinput type="number" v-model="formData.huiyuan_jia" :clearable="false" placeholder="请输入单价" /> -->
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
@@ -56,8 +64,8 @@
 					<!-- <uni-easyinput v-model="formData.add_date" :clearable="false" placeholder="请输入添加时间" /> -->
 					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.addTime"/>
 				</uni-forms-item>
-				<uni-forms-item name="addPeople" label="入库员">
-					<uni-easyinput disabled v-model="userInfo.username" :clearable="false" placeholder="请输入入库员" />
+				<uni-forms-item name="addPeople" label="操作人">
+					<uni-easyinput disabled v-model="userInfo.username" :clearable="false"/>
 				</uni-forms-item>
 			</view>
 			<view class="uni-button-group">
@@ -99,20 +107,46 @@ export default {
 				youxiaoqi:'',
 				shengchanriqi:'',
 				shuliang:'',
-				danjia:'',
+				jinhuo_jia:'',
+				xiaoshou_jia:'',
+				huiyuan_jia:'',
 				danwei:'',
-				zognjia:'',
+				zongjia:'',
 				addTime:'',
 				addPeople:'',
 			},
 			rules: {
-				...getValidator(['name', 'jiage']),
-				status: {
-					rules: [
-						{
-							format: 'bool'
+				...getValidator(['name',"bieming","shuliang","jinhuo_jia","xiaoshou_jia"]),
+				name: {
+					rules: [{
+							required: true,
+							errorMessage: '请输入名称',
 						}
 					]
+				},
+				bieming: {
+					rules: [{
+						required: true,
+						errorMessage: '请输入别名',
+					}]
+				},
+				shuliang: {
+					rules: [{
+						required: true,
+						errorMessage: '请输入数量',
+					}]
+				},
+				jinhuo_jia:{
+					rules: [{
+						required: true,
+						errorMessage: '请输入进货价格',
+					}]
+				},
+				xiaoshou_jia: {
+					rules: [{
+						required: true,
+						errorMessage: '请输入销售价格',
+					}]
 				}
 			},
 			roles: []
@@ -136,19 +170,26 @@ export default {
 		 * 触发表单提交
 		 */
 		submitForm() {
-			this.formData.addPeople = this.userInfo.username;
-			let that = this;
-			uni.showModal({
-				title: '提示',
-				content: '是否确定提交',
-				success: function(res) {
-					if (res.confirm) {
-						that.$refs.form.submit();
-					} else if (res.cancel) {
-						console.log('用户点击取消');
+			this.$refs.form.validate().then(res=>{
+				console.log('表单数据信息：', res);
+				this.formData.addPeople = this.userInfo.username;
+				this.formData.zongjia = this.formData.shuliang * this.formData.jinhuo_jia;
+				let that = this;
+				uni.showModal({
+					title: '提示',
+					content: '是否确定提交',
+					success: function(res) {
+						if (res.confirm) {
+							that.$refs.form.submit();
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
 					}
-				}
-			});
+				});
+			}).catch(err =>{
+				console.log('表单错误信息：', err);
+			})
+			
 		},
 		submit(event) {
 			const { value, errors } = event.detail;

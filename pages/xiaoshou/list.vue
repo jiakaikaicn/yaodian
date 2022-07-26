@@ -195,7 +195,7 @@
 	export default {
 		data() {
 			return {
-				searchVal: 'ffjyhkl',
+				searchVal: '',
 				popupTableData: [], //弹框中的table数据
 				tableData: [],
 				// 每页数据量
@@ -374,7 +374,10 @@
 				var regPos = /^[0-9]/; //判断是否是数字。
 				if(regPos.test(value)){
 					// 判断与库存的关系
-					if(value > this.changList.shuliang){//大于库存
+					console.log(Number(value))
+					console.log(Number(this.changList.shuliang))
+					console.log(Number(value) > Number(this.changList.shuliang));
+					if(Number(value) > Number(this.changList.shuliang)){//大于库存
 						uni.showToast({
 							title:'库存不够，请联系入库员添加',
 							icon:"error"

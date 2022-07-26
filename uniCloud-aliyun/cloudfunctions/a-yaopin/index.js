@@ -9,7 +9,14 @@ const yaopinJournalCollection = db.collection("a-yaopin-journal"); //日志表
 
 
 exports.main = async (event, context) => {
+	console.log(111111111111111111111111111);
 	console.log('event : ', event);
+	console.log('event : ', event);
+	console.log('event : ', event);
+	console.log('event : ', event);
+	console.log('event : ', event);
+	console.log('event : ', event);
+	console.log(111111111111111111111111111);
 	let {
 		name,
 		bieming,
@@ -20,9 +27,11 @@ exports.main = async (event, context) => {
 		youxiaoqi,
 		shengchanriqi,
 		shuliang,
-		danjia,
+		jinhuo_jia,
+		xiaoshou_jia,
+		huiyuan_jia,
 		danwei,
-		zognjia,
+		zongjia,
 		addTime,
 		addPeople,
 		_id,
@@ -72,9 +81,11 @@ exports.main = async (event, context) => {
 				youxiaoqi,
 				shengchanriqi,
 				shuliang,
-				danjia,
+				jinhuo_jia:'',
+				xiaoshou_jia:'',
+				huiyuan_jia:'',
 				danwei,
-				zognjia,
+				zongjia,
 				addTime,
 				addPeople,
 			});
@@ -107,9 +118,11 @@ exports.main = async (event, context) => {
 				youxiaoqi,
 				shengchanriqi,
 				shuliang,
-				danjia,
+				jinhuo_jia:'',
+				xiaoshou_jia:'',
+				huiyuan_jia:'',
 				danwei,
-				zognjia,
+				zongjia,
 				addTime,
 				addPeople,
 			});

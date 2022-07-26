@@ -117,6 +117,18 @@
 			"defaultValue": {
 				"$env": "now"
 			}
+		},
+		"jinhuo_jia": {
+			"bsonType": "string",
+			"description": "进货价"
+		},
+		"xiaoshou_jia": {
+			"bsonType": "string",
+			"description": "销售价格"
+		},
+		"huiyuan_jia": {
+			"bsonType": "string",
+			"description": "会员价"
 		}
 	},
 	"version": "0.0.1"
