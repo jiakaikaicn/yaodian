@@ -3,61 +3,66 @@
 		<uni-forms :label-width="100" v-model="formData">
 			<view class="itemDiv">
 				<uni-forms-item name="name" label="药名" required>
-					<uni-easyinput v-model="formData.name" :clearable="false" placeholder="请输入药名" disabled />
+					<uni-easyinput v-model="formData.name" :clearable="false" disabled />
 				</uni-forms-item>
 				<uni-forms-item name="bieming" label="别名" required>
-					<uni-easyinput v-model="formData.bieming" :clearable="false" placeholder="请输入别名" disabled />
+					<uni-easyinput v-model="formData.bieming" :clearable="false" disabled />
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
 				<uni-forms-item name="guige" label="规格" required>
-					<uni-easyinput v-model="formData.guige" :clearable="false" placeholder="请输入规格" disabled />
+					<uni-easyinput v-model="formData.guige" :clearable="false" disabled />
 				</uni-forms-item>
 				<uni-forms-item name="shengchandanwei" label="生产单位">
-					<uni-easyinput v-model="formData.shengchandanwei" :clearable="false" placeholder="请输入生产单位" disabled />
+					<uni-easyinput v-model="formData.shengchandanwei" :clearable="false" disabled />
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
 				<uni-forms-item name="jixing" label="剂型">
-					<uni-easyinput v-model="formData.jixing" :clearable="false" placeholder="请输入剂型" disabled />
+					<uni-easyinput v-model="formData.jixing" :clearable="false" disabled />
 				</uni-forms-item>
 				<uni-forms-item name="pihao" label="批号">
-					<uni-easyinput v-model="formData.pihao" :clearable="false" placeholder="请输入批号" disabled />
+					<uni-easyinput v-model="formData.pihao" :clearable="false" disabled />
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
 				<uni-forms-item name="youxiaoqi" label="有效期">
-					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.youxiaoqi"disabled />
-					<!-- <uni-easyinput v-model="formData.youxiaoqi" :clearable="false" placeholder="请输入有效期" disabled /> -->
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.youxiaoqi" disabled />
 				</uni-forms-item>
 				<uni-forms-item name="shengchanriqi" label="生产日期">
-					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.shengchanriqi"disabled />
-					<!-- <uni-easyinput v-model="formData.shengchanriqi" :clearable="false" placeholder="请输入生产日期" disabled /> -->
+					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.shengchanriqi" disabled />
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
 				<uni-forms-item name="shuliang" label="数量">
-					<uni-easyinput type="number" v-model="formData.shuliang" :clearable="false" placeholder="请输入数量" disabled />
+					<uni-easyinput type="number" v-model="formData.shuliang" :clearable="false" disabled />
 				</uni-forms-item>
 				<uni-forms-item name="danwei" label="单位">
-					<uni-easyinput v-model="formData.danwei" :clearable="false" placeholder="请输入单位" disabled />
+					<uni-easyinput v-model="formData.danwei" :clearable="false" disabled />
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
-				<uni-forms-item name="danjia" label="单价">
-					<uni-easyinput type="number" v-model="formData.danjia" :clearable="false" placeholder="请输入单价" disabled />
+				<uni-forms-item name="jinhuo_jia" label="进货价" required>
+					<uni-easyinput type="number" v-model="formData.jinhuo_jia" :clearable="false" disabled/>
 				</uni-forms-item>
-				<uni-forms-item name="zognjia" label="总价">
-					<uni-easyinput type="number" v-model="formData.zognjia" :clearable="false" placeholder="请输入总价" disabled />
+				<uni-forms-item name="xiaoshou_jia" label="售价" required>
+					<uni-easyinput type="number" v-model="formData.xiaoshou_jia" :clearable="false" disabled/>
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="zongjia" label="总价">
+					<uni-easyinput type="number" v-model="formData.jinhuo_jia * formData.shuliang || 0" :clearable="false" disabled/>
+				</uni-forms-item>
+				<uni-forms-item>
+					<!-- <uni-easyinput type="number" v-model="formData.huiyuan_jia" :clearable="false" placeholder="请输入单价" /> -->
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
 				<uni-forms-item name="addTime" label="添加时间">
-					<!-- <uni-easyinput v-model="formData.add_date" :clearable="false" placeholder="请输入添加时间" disabled /> -->
 					<uni-datetime-picker type="date" :clear-icon="false" v-model="formData.addTime"disabled />
 				</uni-forms-item>
 				<uni-forms-item name="addPeople" label="入库员">
-					<uni-easyinput disabled v-model="formData.addPeople" :clearable="false" placeholder="请输入入库员" disabled />
+					<uni-easyinput disabled v-model="formData.addPeople" :clearable="false" disabled />
 				</uni-forms-item>
 			</view>
 			

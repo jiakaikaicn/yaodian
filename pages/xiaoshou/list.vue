@@ -12,6 +12,7 @@
 			</view>
 		</view>
 		<!-- 选择框 -->
+		{{baseFormData}} |||
 		<uni-popup ref="popup">
 			<view class="uni-container">
 				<uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange">
@@ -24,7 +25,7 @@
 						<uni-th width="100" align="center">生产日期</uni-th>
 						<uni-th width="80" align="center">库存</uni-th>
 						<uni-th width="80" align="center">单位</uni-th>
-						<uni-th width="120" align="center">单价</uni-th>
+						<uni-th width="120" align="center">销售价</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in popupTableData" :key="index">
 						<uni-td align="center">{{ index + 1 }}</uni-td>
@@ -35,7 +36,7 @@
 						<uni-td align="center">{{ item.shengchanriqi }}</uni-td>
 						<uni-td align="center">{{ item.shuliang }}</uni-td>
 						<uni-td align="center">{{ item.danwei }}</uni-td>
-						<uni-td align="center">{{ item.danjia }}</uni-td>
+						<uni-td align="center">{{ item.xiaoshou_jia }}</uni-td>
 					</uni-tr>
 				</uni-table>
 				<view class="uni-pagination-box">
@@ -43,7 +44,7 @@
 				</view>
 				<!-- 按钮 -->
 				<view class="uni-group">
-					<button class="uni-button" size="mini" type="primary" @click="gotoPage('queding')">确定</button>
+					<button class="uni-button" size="mini" type="primary" @click="gotoPage('chuangjianDD')">创建订单</button>
 					<button class="uni-button" size="mini" type="warn" @click="gotoPage('quxiao')">取消</button>
 				</view>
 			</view>
@@ -55,38 +56,34 @@
 				<button :disabled="tableData.length > 0 ? false: true" class="uni-button" size="mini" type="primary" @click="gotoPage('结算订单')">结算订单</button>
 				<button class="uni-button" size="mini" type="warn" @click="gotoPage('取消订单')">取消订单</button>
 			</view>
+			{{tableData}}
 			<uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
 					<uni-th width="150" align="center">药名</uni-th>
-					<uni-th width="60" align="center">规格</uni-th>
-					<uni-th width="100" align="center">生产单位</uni-th>
-					<uni-th width="100" align="center">有效期</uni-th>
-					<uni-th width="100" align="center">生产日期</uni-th>
 					<uni-th width="80" align="center">库存</uni-th>
 					<uni-th width="80" align="center">购买数量</uni-th>
 					<uni-th width="80" align="center">单位</uni-th>
-					<uni-th width="120" align="center">单价</uni-th>
-					<uni-th width="80" align="center">折扣价</uni-th>
+					<uni-th width="120" align="center">销售价</uni-th>
+					<uni-th width="80" align="center" style="color: #007408;">实际销售价</uni-th>
 					<uni-th width="60" align="center">总价</uni-th>
 					<uni-th width="300" align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item, index) in tableData" :key="index">
 					<uni-td align="center">{{ index + 1 }}</uni-td>
 					<uni-td align="center">{{ item.name }}</uni-td>
-					<uni-td align="center">{{ item.guige }}</uni-td>
-					<uni-td align="center">{{ item.shengchandanwei }}</uni-td>
-					<uni-td align="center">{{ item.youxiaoqi}}</uni-td>
-					<uni-td align="center">{{ item.shengchanriqi }}</uni-td>
 					<uni-td align="center">{{ item.shuliang }}</uni-td>
 					<uni-td align="center">{{ item.buy_shuliang }}</uni-td>
 					<uni-td align="center">{{ item.danwei }}</uni-td>
-					<uni-td align="center">{{ item.danjia }}</uni-td>
-					<uni-td align="center">{{ item.new_jiage }}</uni-td>
-					<uni-td align="center">{{ (item.danjia * item.buy_shuliang) || 0}}</uni-td>
+					<uni-td align="center">
+						<span v-if="item.new_jiage" style="text-decoration:line-through">{{ item.xiaoshou_jia }}</span>
+						<span v-else>{{ item.xiaoshou_jia }}</span>
+					</uni-td>
+					<uni-td align="center" style="color: #007408;">{{ item.new_jiage }}</uni-td>
+					<uni-td align="center">{{ (item.xiaoshou_jia * item.buy_shuliang) || 0}}</uni-td>
 					<uni-td>
 						<view class="uni-group">
-							<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit',item,index)">修改价格</button>
+							<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit',item,index)">修改销售价格</button>
 							<button class="uni-button" size="mini" type="warn" @click="gotoPage('del', item,index)">{{ $t('common.button.delete') }}</button>
 							<button class="uni-button" size="mini" type="warn" @click="gotoPage('detail', item)">详情</button>
 						</view>
@@ -134,9 +131,9 @@
 				ref="inputClose"
 				:beforeClose="true"
 				mode="input"
-				title="请输入要修改的价格"
+				title="请输入要修改的销售价格"
 				value=""
-				placeholder="请输入要价格"
+				placeholder="请输入要修改的销售价格"
 				@confirm="confirmFn('editJiageBox',$event)"
 				@close="closeFn('editJiageBox')"
 			></uni-popup-dialog>
@@ -192,10 +189,14 @@
 </template>
 
 <script>
+	import {
+		mapMutations,
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				searchVal: '',
+				searchVal: 'cs',
 				popupTableData: [], //弹框中的table数据
 				tableData: [],
 				// 每页数据量
@@ -237,10 +238,22 @@
 					zhaoling:0,
 					shuoming:'',
 					// 数量
-					buy_shuliang:'',
+					buy_shuliang:0,
+					new_jiage:"",
+					addPeople:"",
+					addTime:"",
+					xiaoshouPeople:"",//订单销售人
+					xiaoshouTime:"",//订单销售时间
+					dingdanID:"",//订单的id
 				},
 				dingdanList:[],//订单的详情
 			};
+		},
+		computed: {
+			...mapState('app', ['appName']),
+			...mapState('app', ['routes']),
+			...mapState('user', ['userInfo']),
+			...mapState('error', ['logs'])
 		},
 		// 监听现金支付的时候，计算找零
 		watch:{
@@ -251,13 +264,13 @@
 			},
 		},
 		onLoad() {
-			this.selectedIndexs = []
+			this.selectedIndexs = [];
 		},
 		methods: {
 			gotoPage(name, value, index) {
 				this.clickListIndex = index;
 				switch (name) {
-					case 'queding':
+					case 'chuangjianDD':
 						console.log('确定按钮');
 						if (this.selectedIndexs.length == 0) {
 							uni.showToast({
@@ -371,12 +384,10 @@
 				this.$refs.zhifuPopup.open();
 			},
 			dialogInputConfirm(value) {
+				console.log("value",value);
 				var regPos = /^[0-9]/; //判断是否是数字。
 				if(regPos.test(value)){
 					// 判断与库存的关系
-					console.log(Number(value))
-					console.log(Number(this.changList.shuliang))
-					console.log(Number(value) > Number(this.changList.shuliang));
 					if(Number(value) > Number(this.changList.shuliang)){//大于库存
 						uni.showToast({
 							title:'库存不够，请联系入库员添加',
@@ -386,8 +397,12 @@
 						value = value;
 						this.$refs.boxNumberBox.close();
 						this.$refs.popup.close();
+						this.$set(this.popupTableData[0], "buy_shuliang",Number(value));
 						this.tableData = this.tableData.concat(this.popupTableData[this.selectedIndexs]);
-						this.$set(this.tableData[this.selectedIndexs], "buy_shuliang",Number(value))
+						this.selectedIndexs = [];
+						// 开始创建订单   --  添加订单信息
+						console.log("开始创建订单");
+						this.addDingdanList();
 					}
 				}else{
 					uni.showToast({
@@ -442,18 +457,18 @@
 						break;
 				}
 			},
+			// 开始计算总价，数量
 			countFn(){
 				console.log('开始计算总价，数量');
 				console.log(this.tableData);
 				let all_jiage = 0,all_shuliang = 0,dingdanList=[];
 				this.tableData.forEach((item)=>{
-					//如果有折扣价
 					let obj={};
-					all_jiage += Number(item.new_jiage ? item.new_jiage : item.danjia) * Number(item.buy_shuliang);
+					all_jiage += Number(item.new_jiage ? item.new_jiage : item.xiaoshou_jia) * Number(item.buy_shuliang);
 					all_shuliang += Number(item.buy_shuliang);
 					obj.yaopinID = item._id;
 					obj.buy_shuliang = item.buy_shuliang;
-					obj.new_jiage = item.new_jiage ? item.new_jiage : item.danjia;
+					obj.new_jiage = item.new_jiage ? item.new_jiage : item.xiaoshou_jia;
 					obj.zongjia = Number(obj.new_jiage) * Number(obj.buy_shuliang);
 					dingdanList.push(obj);
 				})
@@ -464,13 +479,18 @@
 			// 结算保存数据
 			jiesuanFn(){
 				let that = this;
+				// 订单结算的时间  和 人员
+				this.baseFormData.xiaoshouPeople = this.userInfo.username;
+				let addtime = new Date();
+				this.baseFormData.xiaoshouTime = addtime.getFullYear() + '-' + (addtime.getMonth() + 1) + '-' + addtime.getDate()+ ' ' + addtime.getHours()+ ':' + addtime.getMinutes()+ ':' + addtime.getSeconds();
 				let data = {
 					type:'addDingdan',
 					...this.baseFormData,
 					zhonglei:this.tableData.length,
 					lsit:[
 						...this.tableData
-					]
+					],
+					isFinish:1,//0：未完成  1：已完成
 				};
 				console.log(data);
 				uniCloud.callFunction({
@@ -487,8 +507,6 @@
 								let xiaoshouID = re.result.id;
 								if (res.confirm) {
 									that.closeFn('all');
-									// that.tableData = [];
-									// that.popupTableData = [];
 									that.dingdanXiangqing(xiaoshouID);
 								} else if (res.cancel) {
 									console.log('用户点击取消');
@@ -501,27 +519,61 @@
 					}
 				})
 			},
-			// 订单详情操作
-			dingdanXiangqing(xiaoshouID){
-				let lists = this.dingdanList;
-				for (var i = 0; i < lists.length; i++) {
-					lists[i].dingdanID = xiaoshouID;//添加订单id
-				}
+			
+			// 开始创建订单
+			addDingdanList(){
+				let that = this;
+				this.countFn();
+				// 订单结算的时间  和 人员
+				this.baseFormData.addPeople = this.userInfo.username;
+				let addtime = new Date(); 
+				this.baseFormData.addTime = addtime.getFullYear() + '-' + (addtime.getMonth() + 1) + '-' + addtime.getDate()+ ' ' + addtime.getHours()+ ':' + addtime.getMinutes()+ ':' + addtime.getSeconds();
 				let data = {
-					type:'dingdanXQ',
-					list:lists
+					...this.baseFormData,
+					zhonglei:this.tableData.length,
+					lsit:this.tableData[this.tableData.length - 1],
+					isFinish:0,//0：未完成  1：已完成
+				};
+				// 判断是更新还是新建订单
+				if(this.baseFormData.dingdanID == ''){
+					data.type='addDingdan';
+				}else{
+					data.type='upDateDingdan';
 				}
+				console.log('data',data);
 				uniCloud.callFunction({
-					name:'a-xiaoshou',
+					name:'a-dingdan',
 					data,
 					success: (res) => {
-						console.log(res);
+						if(this.baseFormData.dingdanID == '')this.baseFormData.dingdanID = res.result.id;
+						that.closeFn('all');
+						that.addDingdanXQ();
 					},
 					fail: (err) => {
 						console.log(err);
 					}
 				})
-			}
+			},
+			// 订单详情操作
+			addDingdanXQ(dingdanID){
+				let lists = this.dingdanList;
+				for (var i = 0; i < lists.length; i++) {
+					lists[i].dingdanID = this.baseFormData.dingdanID;//添加订单id
+				}
+				let data = {
+					type:'addDingdanXQ',
+					list:lists
+				}
+				uniCloud.callFunction({
+					name:'a-dingdan',
+					data,
+					success: (res) => { 
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
+			},
 		}
 	};
 </script>

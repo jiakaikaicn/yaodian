@@ -2,12 +2,11 @@
 	<view>
 		<view class="uni-header">
 			<view class="uni-group hide-on-phone">
-				<view class="uni-title">库存管理</view>
+				<view class="uni-title">订单</view>
 			</view>
 			<view class="uni-group">
-				<input class="uni-search" type="text" v-model="searchVal" @confirm="search" placeholder="请输入商品名称" />
+				<input class="uni-search" type="text" v-model="searchVal" @confirm="search" placeholder="请输入订单id" />
 				<button class="uni-button" type="default" size="mini" @click="search">{{ $t('common.button.search') }}</button>
-				<button class="uni-button" type="primary" size="mini" @click="gotoPage('add')">{{ $t('common.button.add') }}</button>
 			</view>
 		</view>
 		
@@ -15,40 +14,31 @@
 			<uni-table :loading="loading" border stripe :emptyText="$t('common.empty')">
 				<uni-tr>
 					<uni-th width="40" align="center">ID</uni-th>
-					<uni-th width="150" align="center">药名</uni-th>
-					<uni-th width="60" align="center">规格</uni-th>
-					<uni-th width="100" align="center">生产单位</uni-th>
-					<uni-th width="100" align="center">有效期</uni-th>
-					<uni-th width="100" align="center">生产日期</uni-th>
-					<uni-th width="80" align="center">库存</uni-th>
-					<uni-th width="80" align="center">单位</uni-th>
-					<uni-th width="80" align="center">进货价</uni-th>
-					<uni-th width="120" align="center">销售单价</uni-th>
-                    <uni-th width="120" align="center">总价</uni-th>
-					<uni-th width="100" align="center">添加时间</uni-th>
-					<uni-th width="100" align="center">入库员</uni-th>
+					<uni-th align="center">订单号</uni-th>
+					<uni-th width="150" align="center">订单总价</uni-th>
+					<uni-th width="150" align="center">订单数量</uni-th>
+					<uni-th width="150" align="center">订单创建人</uni-th>
+					<uni-th width="150" align="center">订单创建时间</uni-th>
+					<uni-th width="150" align="center">是否完成</uni-th>
+					<uni-th width="150" align="center">订单销售人</uni-th>
+					<uni-th width="150" align="center">订单销售时间</uni-th>
 					<uni-th width="300" align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item, index) in tableData" :key="index">
 					<uni-td align="center">{{ index + 1 }}</uni-td>
-					<uni-td align="center">{{ item.name }}</uni-td>
-					<uni-td align="center">{{ item.guige }}</uni-td>
-					<uni-td align="center">{{ item.shengchandanwei }}</uni-td>
-					<uni-td align="center">{{ item.youxiaoqi}}</uni-td>
-					<uni-td align="center">{{ item.shengchanriqi }}</uni-td>
-					<uni-td align="center">{{ item.shuliang }}</uni-td>
-					<uni-td align="center">{{ item.danwei }}</uni-td>
-					<uni-td align="center">{{ item.jinhuo_jia }}</uni-td>
-					<uni-td align="center">{{ item.xiaoshou_jia }}</uni-td>
-					<uni-td align="center">{{item.jinhuo_jia * item.shuliang || 0}}</uni-td>
-                    <uni-td align="center">{{item.addTime}}</uni-td>
+					<uni-td align="center">{{ item._id }}</uni-td>
+					<uni-td align="center">{{ item.yingshou }}</uni-td>
+					<uni-td align="center">{{ item.buy_shuliang }}</uni-td>
 					<uni-td align="center">{{ item.addPeople }}</uni-td>
+					<uni-td align="center">{{ item.addTime}}</uni-td>
+					<uni-td align="center">{{ item.isFinish == '0' ? '订单未完成' : '订单已完成' }}</uni-td>
+					<uni-td align="center">{{ item.xiaoshouPeople }}</uni-td>
+					<uni-td align="center">{{ item.xiaoshouTime }}</uni-td>
 					<uni-td>
 						<view class="uni-group">
-							<button class="uni-button" size="mini" type="warn" @click="addKucunFn(item)">添加库存</button>
-							<button class="uni-button" size="mini" type="primary" @click="gotoPage('edit', item)">修改药品基本信息</button>
 							<button class="uni-button" size="mini" type="warn" @click="gotoPage('del', item)">{{ $t('common.button.delete') }}</button>
 							<button class="uni-button" size="mini" type="primary" @click="gotoPage('detail', item)">详情</button>
+							<button v-if="item.isFinish == '0'" class="uni-button" size="mini" type="primary" @click="gotoPage('jiesuan', item)">结算</button>
 						</view>
 					</uni-td>
 				</uni-tr>
@@ -58,17 +48,6 @@
 		<!-- #ifndef H5 -->
 		<fix-window />
 		<!-- #endif -->
-		<uni-popup ref="popup" type="dialog">
-			<uni-popup-dialog
-				ref="inputClose"
-				mode="input"
-				title="新增库存"
-				value=""
-				placeholder="请输入要添加的库存数量(新增数量)"
-				@confirm="dialogInputConfirm"
-			></uni-popup-dialog>
-			
-		</uni-popup>
 	</view>
 </template>
 
@@ -105,54 +84,6 @@ export default {
 		this.getData(1);
 	},
 	methods: {
-		close() {
-			this.$refs.popup.close();
-		},
-		// 添加库存
-		addKucunFn(item) {
-			this.clickAddKucunObj = item;
-			this.$refs.popup.open();
-		},
-		// 添加库存
-		dialogInputConfirm(value) {
-			var regPos = /^-?[0-9]/; //判断是否是数字。
-			if(regPos.test(value) ){
-				value = value;
-			}else{
-				uni.showToast({
-					title:'请输入数字（正数，负数）',
-					icon:"error"
-				})
-				return
-			}
-			let obj = this.clickAddKucunObj;
-			let { _id, shuliang } = obj;
-			shuliang = Number(shuliang) + Number(value);
-			uniCloud.callFunction({
-				name: 'a-yaopin',
-				data: {
-					_id,
-					shuliang,
-					type: 'addKucun'
-				},
-				success: res => {
-					uni.showToast({
-						title: '更新成功'
-					});
-					uni.hideLoading();
-					this.getData(1);
-					let yaopinID = _id;
-					let addKucunNum = value;
-					addYaoPinJournal('add','添加库存',yaopinID,addKucunNum);//添加操作日志
-				},
-				fail: err => {
-					console.log(err);
-					uni.showToast({
-						title: '更新失败'
-					});
-				}
-			});
-		},
 		// 分页触发
 		change(e) {
 			console.log(e);
@@ -178,7 +109,7 @@ export default {
 				data.value = value;
 			}
 			uniCloud.callFunction({
-				name: 'a-yaopin',
+				name: 'a-dingdan',
 				data: data,
 				success: res => {
 					console.log(res);
@@ -201,11 +132,6 @@ export default {
 						url: './detail/detail?id=' + item._id
 					});
 					break;
-				case 'add':
-					uni.navigateTo({
-						url: './add/add'
-					});
-					break;
 				case 'del':
 					uni.showModal({
 						title: '提示',
@@ -221,11 +147,6 @@ export default {
 						}
 					});
 					break;
-				case 'edit':
-					uni.navigateTo({
-						url: './edit/edit?item=' + encodeURIComponent(JSON.stringify(item))
-					});
-					break;
 			}
 		},
 		// 删除
@@ -235,14 +156,13 @@ export default {
 				mask: true
 			});
 			uniCloud.callFunction({
-				name: 'a-yaopin',
+				name: 'a-dingdan',
 				data: {
 					id,
 					type: 'del'
 				},
 				success: res => {
 					let yaopinID = id;
-					addYaoPinJournal('del','删除库存',yaopinID);//添加操作日志
 					uni.showToast({
 						title: '删除成功'
 					});

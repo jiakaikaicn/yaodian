@@ -11,19 +11,19 @@
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
-		"people":{
+		"people": {
 			"description": "操作人"
 		},
-		"time":{
+		"time": {
 			"description": "操作时间"
 		},
-		"operationType":{
+		"operationType": {
 			"description": "操作类型"
 		},
-		"shuoming":{
+		"shuoming": {
 			"description": "操作说明"
 		},
-		"yaopinID":{
+		"yaopinID": {
 			"description": "操作的药品id"
 		}
 	}

@@ -84,6 +84,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/xiaoshou/dingdan/dingdan",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
     "subPackages": [{
         "root": "pages/system",

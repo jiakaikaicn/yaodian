@@ -44,11 +44,19 @@
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
-				<uni-forms-item name="danjia" label="单价">
-					<uni-easyinput type="number" v-model="formData.danjia" :clearable="false" placeholder="请输入单价" disabled/>
+				<uni-forms-item name="jinhuo_jia" label="进货价" required>
+					<uni-easyinput type="number" v-model="formData.jinhuo_jia" :clearable="false" placeholder="请输入单价" />
 				</uni-forms-item>
-				<uni-forms-item name="zognjia" label="总价">
-					<uni-easyinput type="number" v-model="formData.zognjia" :clearable="false" placeholder="请输入总价" disabled/>
+				<uni-forms-item name="xiaoshou_jia" label="售价" required>
+					<uni-easyinput type="number" v-model="formData.xiaoshou_jia" :clearable="false" placeholder="请输入进货价" />
+				</uni-forms-item>
+			</view>
+			<view class="itemDiv">
+				<uni-forms-item name="zongjia" label="总价">
+					<uni-easyinput type="number" v-model="formData.jinhuo_jia * formData.shuliang || 0" :clearable="false" placeholder="请输入总价" disabled/>
+				</uni-forms-item>
+				<uni-forms-item>
+					<!-- <uni-easyinput type="number" v-model="formData.huiyuan_jia" :clearable="false" placeholder="请输入单价" /> -->
 				</uni-forms-item>
 			</view>
 			<view class="itemDiv">
@@ -107,7 +115,9 @@
 					youxiaoqi:'',
 					shengchanriqi:'',
 					shuliang:'',
-					danjia:'',
+					jinhuo_jia:'',
+					xiaoshou_jia:'',
+					huiyuan_jia:'',
 					danwei:'',
 					zognjia:'',
 					addTime:'',

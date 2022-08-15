@@ -163,7 +163,6 @@ export default {
 	onLoad() {
 		let data = new Date();
 		this.formData.addTime = data.getFullYear() + '-' + (data.getMonth() + 1) + '-' + data.getDate();
-		
 	},
 	methods: {
 		/**
@@ -173,7 +172,7 @@ export default {
 			this.$refs.form.validate().then(res=>{
 				console.log('表单数据信息：', res);
 				this.formData.addPeople = this.userInfo.username;
-				this.formData.zongjia = this.formData.shuliang * this.formData.jinhuo_jia;
+				this.formData.zongjia = this.formData.shuliang * this.formData.jinhuo_jia || 0;
 				let that = this;
 				uni.showModal({
 					title: '提示',

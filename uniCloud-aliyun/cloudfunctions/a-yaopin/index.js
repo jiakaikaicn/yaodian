@@ -9,14 +9,6 @@ const yaopinJournalCollection = db.collection("a-yaopin-journal"); //日志表
 
 
 exports.main = async (event, context) => {
-	console.log(111111111111111111111111111);
-	console.log('event : ', event);
-	console.log('event : ', event);
-	console.log('event : ', event);
-	console.log('event : ', event);
-	console.log('event : ', event);
-	console.log('event : ', event);
-	console.log(111111111111111111111111111);
 	let {
 		name,
 		bieming,
@@ -56,12 +48,12 @@ exports.main = async (event, context) => {
 			if (event.value) {
 				listArr = await yaopinCollection.where({
 					'bieming': value
-				}).skip(skip).limit(limit).get();
+				}).skip(skip).limit(limit).orderBy("addTime", "desc").get();
 				total = await yaopinCollection.where({
 					'bieming': value
 				}).count();
 			} else {
-				listArr = await yaopinCollection.skip(skip).limit(limit).get();
+				listArr = await yaopinCollection.skip(skip).limit(limit).orderBy("addTime", "desc").get();
 				total = await yaopinCollection.count();
 			}
 			resArr = {
@@ -81,9 +73,9 @@ exports.main = async (event, context) => {
 				youxiaoqi,
 				shengchanriqi,
 				shuliang,
-				jinhuo_jia:'',
-				xiaoshou_jia:'',
-				huiyuan_jia:'',
+				jinhuo_jia,
+				xiaoshou_jia,
+				huiyuan_jia,
 				danwei,
 				zongjia,
 				addTime,
@@ -118,9 +110,9 @@ exports.main = async (event, context) => {
 				youxiaoqi,
 				shengchanriqi,
 				shuliang,
-				jinhuo_jia:'',
-				xiaoshou_jia:'',
-				huiyuan_jia:'',
+				jinhuo_jia,
+				xiaoshou_jia,
+				huiyuan_jia,
 				danwei,
 				zongjia,
 				addTime,
@@ -156,16 +148,6 @@ exports.main = async (event, context) => {
 				total
 			};
 			return resArr
-		// case 'ceshiduobiao':
-		// 	let ress = await yaopinJournalCollection.aggregate()
-		// 		.lookup({
-		// 			from: as, //要联查哪个表
-		// 			localField: 'yaopinID', //本表字段
-		// 			foreignField: '_id', //关联字段
-		// 			as: 'yaopin' //别名
-		// 		}).fie
-		// 		.end()
-		// 	return ress
 	}
 
 };

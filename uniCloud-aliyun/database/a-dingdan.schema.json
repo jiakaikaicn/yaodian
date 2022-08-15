@@ -12,7 +12,9 @@
 			"description": "ID，系统自动生成"
 		},
 		"yaopinID": {
-			"description": "药品id 关联yaopin表的id"
+			"description": "药品id 关联yaopin表的id",
+			"bsonType": "string",
+			"foreignKey": "a-dingdanDetails.yaopinID"
 		},
 		"shuliang": {
 			"description": "本次订单的本药品的数量"
@@ -20,7 +22,7 @@
 		"new_jiage": {
 			"description": "本次订单的本药品的单价"
 		},
-		"zongjia":{
+		"zongjia": {
 			"description": "本次订单的本药品的总价"
 		}
 	}
