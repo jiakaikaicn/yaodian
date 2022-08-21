@@ -93,6 +93,24 @@
             }
             
         }
+		,{
+		    "path" : "pages/xiaoshou/dingdan/detail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "订单详情",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/shoppingBuy/shoppingBuy",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
     "subPackages": [{
         "root": "pages/system",

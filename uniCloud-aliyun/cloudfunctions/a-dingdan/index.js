@@ -48,7 +48,7 @@ exports.main = async (event, context) => {
 			return resArr
 		case 'addDingdan':
 			// 创建订单
-			let addDingdanList = await dingdanCollection.add({
+			let addDingdan = await dingdanCollection.add({
 				shishou,//实收
 				buy_shuliang,//共多少件
 				zhonglei,//几种药
@@ -62,16 +62,19 @@ exports.main = async (event, context) => {
 				addTime,//订单创建时间
 				xiaoshouPeople,//订单销售人
 				xiaoshouTime,//订单销售时间
+				list,//订单的药品内容  是数组的方式
 			});
-			
-			return addDingdanList
-		case 'addDingdanXQ':
-			//添加订单详情
-			let lists = event.list;
-			let dingdanXQList = await dingdanDetailsCollection.add(lists);
-			return dingdanXQList
+			dingdanID = addDingdan.id;
+			// 创建订单详情
+			await dingdanDetailsCollection.add({dingdanID,list});
+			resArr ={
+				addDingdan,
+			}
+			return resArr
 		case "del":
 			let res = await dingdanCollection.doc(event.id).remove();
+			// 删除订单详情的数据
+			await dingdanDetailsCollection.where({dingdanID:event.id}).remove();
 			return res
 		case 'upDateDingdan':
 			let upDateDingdanList = await dingdanCollection.doc(dingdanID).set({
@@ -88,8 +91,18 @@ exports.main = async (event, context) => {
 				addTime,//订单创建时间
 				xiaoshouPeople,//订单销售人
 				xiaoshouTime,//订单销售时间
+				list,//订单详情
 			});
 			return upDateDingdanList
+		case 'dingdanXQ':
+			//获取订单详情
+			listArr = await dingdanDetailsCollection.skip(skip).limit(limit).where({dingdanID:dingdanID}).get();
+			total = await dingdanDetailsCollection.count();
+			resArr = {
+				listArr,
+				total
+			};
+			return resArr
 		default:
 			break;
 	}

@@ -18,10 +18,10 @@
 					<uni-th width="150" align="center">订单总价</uni-th>
 					<uni-th width="150" align="center">订单数量</uni-th>
 					<uni-th width="150" align="center">订单创建人</uni-th>
-					<uni-th width="150" align="center">订单创建时间</uni-th>
-					<uni-th width="150" align="center">是否完成</uni-th>
-					<uni-th width="150" align="center">订单销售人</uni-th>
-					<uni-th width="150" align="center">订单销售时间</uni-th>
+					<uni-th width="230" align="center">订单创建时间</uni-th>
+					<uni-th width="100" align="center">是否完成</uni-th>
+					<uni-th width="100" align="center">订单销售人</uni-th>
+					<uni-th width="230" align="center">订单销售时间</uni-th>
 					<uni-th width="300" align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item, index) in tableData" :key="index">
@@ -31,12 +31,12 @@
 					<uni-td align="center">{{ item.buy_shuliang }}</uni-td>
 					<uni-td align="center">{{ item.addPeople }}</uni-td>
 					<uni-td align="center">{{ item.addTime}}</uni-td>
-					<uni-td align="center">{{ item.isFinish == '0' ? '订单未完成' : '订单已完成' }}</uni-td>
+					<uni-td align="center">{{ item.isFinish == '0' ? '未完成' : '已完成' }}</uni-td>
 					<uni-td align="center">{{ item.xiaoshouPeople }}</uni-td>
 					<uni-td align="center">{{ item.xiaoshouTime }}</uni-td>
 					<uni-td>
 						<view class="uni-group">
-							<button class="uni-button" size="mini" type="warn" @click="gotoPage('del', item)">{{ $t('common.button.delete') }}</button>
+							<button v-if="item.isFinish == '0'" class="uni-button" size="mini" type="warn" @click="gotoPage('del', item)">{{ $t('common.button.delete') }}</button>
 							<button class="uni-button" size="mini" type="primary" @click="gotoPage('detail', item)">详情</button>
 							<button v-if="item.isFinish == '0'" class="uni-button" size="mini" type="primary" @click="gotoPage('jiesuan', item)">结算</button>
 						</view>
@@ -129,7 +129,7 @@ export default {
 			switch (name) {
 				case 'detail':
 					uni.navigateTo({
-						url: './detail/detail?id=' + item._id
+						url:'./detail?item='+ encodeURIComponent(JSON.stringify(item))
 					});
 					break;
 				case 'del':

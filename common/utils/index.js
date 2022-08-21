@@ -74,3 +74,10 @@ export function addYaoPinJournal(operationType, shuoming, yaopinID,addKucunNum) 
 		}
 	})
 }
+
+// 获取时间   格式  2022-08-21 12:15:21
+export function timeFn(time = +new Date()) {
+	var date = new Date(time + 8 * 3600 * 1000);
+	let tim = date.toJSON().substr(0, 19).replace('T', ' ');
+	return tim;
+}

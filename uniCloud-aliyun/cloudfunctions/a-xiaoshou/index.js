@@ -45,7 +45,7 @@ exports.main = async (event, context) => {
 			let getListByIDList;
 			getListByIDList = await yaopinCollection.where({
 				"bieming":event.value
-			}).get();
+			}).field({'_id':true,'name':true,'shuliang':true,'xiaoshou_jia':true,'huiyuan_jia':true,'danwei':true}).get();
 			return getListByIDList
 		// case 'addDingdan':
 		// 	// 创建订单

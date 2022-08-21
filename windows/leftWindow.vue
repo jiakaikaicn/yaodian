@@ -17,7 +17,8 @@
 			return {
 				...config.sideBar,
 				field: 'url as value, name as text, menu_id, parent_id, sort, icon, permission',
-				currentMenu: '/'
+				currentMenu: '/',
+				staticMenu:[],//静止的表单
 			}
 		},
 		computed: {
