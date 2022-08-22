@@ -26,7 +26,7 @@
 					<uni-td align="center">{{ item.people}}</uni-td>
 					<uni-td align="center">{{ item.time }}</uni-td>
 					<uni-td align="center">
-						<view class="uni-group">
+						<view class="uni-group" v-if="item.operationType != 'delDingdan'">
 							<button class="uni-button" size="mini" type="primary" @click="gotoPage('detail', item)">详情</button>
 						</view>
 					</uni-td>
@@ -68,6 +68,7 @@
 					case 'edit':
 						return '修改';
 					case 'del':
+					case 'delDingdan':
 						return '删除';
 					default:
 						break;

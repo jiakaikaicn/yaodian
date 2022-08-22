@@ -7,6 +7,7 @@
 	import {
 		version
 	} from './package.json'
+	import { ConstData } from "common/utils/const.js"
 	export default {
 		created() {
 			this.clear = undefined

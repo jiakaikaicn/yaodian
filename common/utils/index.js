@@ -75,9 +75,45 @@ export function addYaoPinJournal(operationType, shuoming, yaopinID,addKucunNum) 
 	})
 }
 
+// 删除订单  id :订单id
+export function delDingdanFn(dingdanID) {
+	console.log('删除订单，同时删除订单详情');
+	console.log(dingdanID);
+	uni.showLoading({
+		title: '删除中...',
+		mask: true
+	});
+	// let time = timeFn(); //获取当前系统时间
+	// let people = uni.getStorageSync('lastUsername');; //获取当前操作人
+	let data = {
+		id:dingdanID,
+		type: 'del',
+		// people,
+		// time,
+	}
+	console.log(data);
+	uniCloud.callFunction({
+		name: 'a-dingdan',
+		data,
+		success: res => {
+			uni.showToast({
+				title: '删除成功'
+			});
+			uni.hideLoading();
+		},
+		fail: err => {
+			console.log(err);
+			uni.showToast({
+				title: '删除失败'
+			});
+		}
+	});
+}
+
 // 获取时间   格式  2022-08-21 12:15:21
 export function timeFn(time = +new Date()) {
 	var date = new Date(time + 8 * 3600 * 1000);
 	let tim = date.toJSON().substr(0, 19).replace('T', ' ');
 	return tim;
 }
+
