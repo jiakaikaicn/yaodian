@@ -487,7 +487,7 @@
 					type:'addDingdan',
 					...this.baseFormData,
 					zhonglei:this.tableData.length,
-					lsit:[
+					list:[
 						...this.tableData
 					],
 					isFinish:1,//0：未完成  1：已完成
@@ -531,7 +531,7 @@
 				let data = {
 					...this.baseFormData,
 					zhonglei:this.tableData.length,
-					lsit:this.tableData[this.tableData.length - 1],
+					list:this.tableData[this.tableData.length - 1],
 					isFinish:0,//0：未完成  1：已完成
 				};
 				// 判断是更新还是新建订单

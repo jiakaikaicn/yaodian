@@ -110,6 +110,80 @@ export function delDingdanFn(dingdanID) {
 	});
 }
 
+
+// 创建订单  和 更新订单
+export function dingdanFn(data) {
+	let XQList = data.list;
+	console.log('创建订单  或者 更新订单');
+	console.log(data);
+	let loadTitle = '';
+	// 判断是否有订单id  有就是更新，没有的话新建
+ 	if (data.dingdanID == '') {
+		data.type = 'addDingdan';
+		loadTitle = '新建订单中...'
+		console.log('我是新建订单，创建订单的数据：', data);
+	} else {
+		data.type = 'upDateDingdan';
+		loadTitle = '更新订单中...';
+		// data.yaopinIDList = ["62df68c906b1e20001162833", "62df6c397a1d270001aca2ea"];
+		console.log('我是更新订单，更新订单的数据：', data);
+	}
+	uni.showLoading({
+		title:loadTitle,
+		mask: true
+	});
+	console.log(data);
+	uniCloud.callFunction({
+		name: 'a-dingdan',
+		data,
+		success: res => {
+			console.log(res);
+			if(res.result.code == '10000'){
+				console.log('更新成功!开始核销');
+				hexiaoYP(XQList);
+			}
+			uni.hideLoading();
+		},
+		fail: err => {
+			console.log(err);
+			uni.showToast({
+				title: '操作失败，请联系管理员'
+			});
+		}
+	});
+}
+
+// 核销订单内容
+export function hexiaoYP(list) {
+	console.log('核销订单内容，进行药品库存的核销');
+	let data = {
+		list:list,
+		type:'hexiaoDingdan'
+	}
+	console.log(data);
+	uniCloud.callFunction({
+		name: 'a-dingdan',
+		data,
+		success: res => {
+			console.log(res);
+			uni.showToast({
+				title: '核销成功'
+			});
+			setTimeout(function() {
+				uni.navigateTo({
+					url:'/pages/xiaoshou/dingdan/dingdan'
+				})
+			}, 1000);
+		},
+		fail: err => {
+			console.log(err);
+			uni.showToast({
+				title: '操作失败，请联系管理员'
+			});
+		}
+	});
+}
+
 // 获取时间   格式  2022-08-21 12:15:21
 export function timeFn(time = +new Date()) {
 	var date = new Date(time + 8 * 3600 * 1000);

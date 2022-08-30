@@ -8,8 +8,72 @@
 		</view>
 		<view class="uni-container">
 			<uni-notice-bar v-if="!deviceTableData.length && !userTableData.length && !query.platform_id" showGetMore
-				showIcon class="mb-m pointer" text="暂无数据, 统计相关功能暂未开发"
-				/>
+				showIcon class="mb-m pointer" text="暂无数据, 统计相关功能需开通 uni 统计后才能使用, 如未开通, 点击查看具体流程"
+				@click="navTo('https://uniapp.dcloud.io/uni-stat-v2.html')" />
+			<view class="uni-stat--x mb-m">
+				<uni-stat-tabs label="平台选择" type="boldLine" mode="platform" v-model="query.platform_id" />
+			</view>
+			<!-- <uni-stat-panel :items="panelData" :contrast="true" /> -->
+			<view class="uni-stat--x p-m">
+				<view class="uni-stat-card-header">设备概览</view>
+				<uni-table :loading="loading" border stripe emptyText="暂无数据">
+					<uni-tr>
+						<!-- <uni-th align="center">操作</uni-th> -->
+						<template v-for="(mapper, index) in deviceTableFields">
+							<uni-th v-if="mapper.title" :key="index" align="center">
+								{{mapper.title}}
+							</uni-th>
+						</template>
+					</uni-tr>
+					<uni-tr v-for="(item ,i) in deviceTableData" :key="i">
+						<template v-for="(mapper, index) in deviceTableFields">
+							<uni-td v-if="mapper.field === 'appid'" align="center">
+								<view v-if="item.appid" @click="navTo('/pages/uni-stat/device/overview/overview', item.appid)"
+									class="link-btn-color">
+									{{item[mapper.field] !== undefined ? item[mapper.field] : '-'}}
+								</view>
+								<view v-else @click="navTo('/pages/system/app/add')" class="link-btn-color">
+									需添加此应用的 appid
+								</view>
+							</uni-td>
+							<uni-td v-else :key="index" align="center">
+								{{item[mapper.field] !== undefined ? item[mapper.field] : '-'}}
+							</uni-td>
+						</template>
+					</uni-tr>
+				</uni-table>
+			</view>
+			<view class="uni-stat--x p-m">
+				<view class="uni-stat-card-header">注册用户概览</view>
+				<uni-table :loading="loading" border stripe emptyText="暂无数据">
+					<uni-tr>
+						<template v-for="(mapper, index) in userTableFields">
+							<uni-th v-if="mapper.title" :key="index" align="center">
+								{{mapper.title}}
+							</uni-th>
+						</template>
+					</uni-tr>
+					<uni-tr v-for="(item ,i) in userTableData" :key="i">
+						<template v-for="(mapper, index) in userTableFields">
+							<uni-td v-if="mapper.field === 'appid'" align="center">
+								<view v-if="item.appid" @click="navTo('/pages/uni-stat/user/overview/overview', item.appid)"
+									class="link-btn-color">
+									{{item[mapper.field] !== undefined ? item[mapper.field] : '-'}}
+								</view>
+								<view v-else @click="navTo('/pages/system/app/add')" class="link-btn-color">
+									需添加此应用的 appid
+								</view>
+							</uni-td>
+							<uni-td v-else :key="index" align="center">
+								{{item[mapper.field] !== undefined ? item[mapper.field] : '-'}}
+							</uni-td>
+						</template>
+					</uni-tr>
+				</uni-table>
+			</view>
+			<!-- <view class="uni-pagination-box">
+				<uni-pagination show-icon :page-size="pageSize" :current="pageCurrent" :total="tableData.length" />
+			</view> -->
 		</view>
 
 		<!-- #ifndef H5 -->

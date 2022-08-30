@@ -31,7 +31,7 @@
 					<uni-td align="center">{{ item.buy_shuliang }}</uni-td>
 					<uni-td align="center">{{ item.addPeople }}</uni-td>
 					<uni-td align="center">{{ item.addTime}}</uni-td>
-					<uni-td align="center">{{ item.isFinish == '0' ? '未完成' : '已完成' }}</uni-td>
+					<uni-td align="center" :class="item.isFinish == '0' ? 'isFinishClass':''">{{ item.isFinish == '0' ? '未完成' : '已完成' }}</uni-td>
 					<uni-td align="center">{{ item.xiaoshouPeople }}</uni-td>
 					<uni-td align="center">{{ item.xiaoshouTime }}</uni-td>
 					<uni-td>
@@ -193,5 +193,8 @@ page {
 		margin-left:0;
 		margin-right: 10px !important;
 	}
+}
+.isFinishClass{
+	color:red;
 }
 </style>

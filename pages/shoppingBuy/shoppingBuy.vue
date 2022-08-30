@@ -46,8 +46,8 @@
 		<view class="uni-container">
 			<!-- 按钮 -->
 			<view class="uni-group">
-				<!-- <button :disabled="tableData.length > 0 ? false: true" class="uni-button" size="mini" type="primary" @click="gotoPage('结算订单')">结算订单</button> -->
-				<button class="uni-button" size="mini" type="primary" @click="gotoPage('结算订单')">结算订单</button>
+				<button :disabled="tableData.length > 0 ? false: true" class="uni-button" size="mini" type="primary" @click="gotoPage('结算订单')">创建订单</button>
+				<!-- <button class="uni-button" size="mini" type="primary" @click="gotoPage('结算订单')">结算订单</button> -->
 				<button class="uni-button" size="mini" type="warn" @click="gotoPage('取消订单')">取消订单</button>
 			</view>
 			<!-- 订单的内容(tableData):{{tableData}} -->
@@ -75,8 +75,8 @@
 					</uni-td>
 					<uni-td align="center" style="color: #007408;">{{ item.new_jiage }}</uni-td>
 					<uni-td align="center">
-						<span v-if="item.new_jiage">{{(item.new_jiage * item.buy_shuliang)}}</span>
-						<span v-else>{{(item.xiaoshou_jia * item.buy_shuliang)}}</span>
+						<span v-if="item.new_jiage">{{(item.new_jiage * item.buy_shuliang) || 0}}</span>
+						<span v-else>{{(item.xiaoshou_jia * item.buy_shuliang) || 0}}</span>
 					</uni-td>
 					<uni-td>
 						<view class="uni-group">
@@ -253,7 +253,7 @@
 				this.clickListIndex = index;
 				switch (name) {
 					case '加入购物车':
-						console.log('确定按钮');
+						console.log('确定按钮',this.selectedList);
 						if (this.selectedList.length == 0) {
 							uni.showToast({
 								title: "请最少选择一个药品进行结算",
@@ -283,12 +283,12 @@
 						this.countFn();
 						// 开始创建订单
 						this.addDingdanList();
-						this.$refs.jiesuanPopupBox.open();
+						// this.$refs.jiesuanPopupBox.open();
 						break;
 					case '取消订单':
 						console.log('取消订单');
 						this.tableData = [];
-						baseFormData = {
+						this.baseFormData = {
 							zhifufangshi: '',
 							yingshou: 0,
 							shishou: 0,
@@ -359,8 +359,14 @@
 			},
 			// 选择药品
 			selectionChange(e) {
+				this.selectedInd = '';
 				this.selectedInd = e.detail.index;
-				this.selectedList.push(this.popupTableData[e.detail.index])
+				this.selectedList = [];
+				if(e.detail.index.length == '1'){
+					this.selectedList.push(this.popupTableData[e.detail.index])
+				}else{
+					console.log('选择的内容有问题');
+				}
 			},
 			selectionChange2(e) {
 				console.log('2222222222222222222222222222222222');
@@ -505,7 +511,7 @@
 					type: 'addDingdan',
 					...this.baseFormData,
 					zhonglei: this.tableData.length,
-					lsit: [
+					list: [
 						...this.tableData
 					],
 					isFinish: 1, //0：未完成  1：已完成
@@ -563,26 +569,18 @@
 			// 开始创建订单
 			addDingdanList() {
 				console.log('开始创建订单');
+				uni.showLoading({
+					title: '订单创建中...',
+					mask: true
+				});
 				let that = this;
 				// 订单结算的时间  和 人员
 				this.baseFormData.addPeople = this.userInfo.username;
 				this.baseFormData.addTime = timeFn();
-				// let addtime = new Date();
-				// this.baseFormData.addTime = addtime.getFullYear() + '-' + (addtime.getMonth() + 1) + '-' + addtime.getDate() + ' ' + addtime.getHours() + ':' + addtime.getMinutes() + ':' + addtime.getSeconds();
 				let data = {
 					...this.baseFormData,
 					zhonglei: this.tableData.length,
 					list: this.tableData,
-					// list:[ { 
-					// 	"_id": "62fba97443000a0001675cfd", 
-					// 	"name": "测试药品2", 
-					// 	"shuliang": "50", 
-					// 	"xiaoshou_jia": "40", 
-					// 	"huiyuan_jia": "", 
-					// 	"danwei": "", 
-					// 	"buy_shuliang": "1" ,
-					// 	},
-					// ],
 					isFinish: 0, //0：未完成  1：已完成
 				};
 				// 判断是更新还是新建订单   如有订单id  就是更新，没有订单id 就是新建订单
@@ -601,6 +599,16 @@
 						// 创建成功之后 返回订单id ---后续有可能需要
 						if (this.baseFormData.dingdanID == '') this.baseFormData.dingdanID = res.result.addDingdan.id;
 						// that.addDingdanXQ(this.baseFormData.dingdanID);
+						uni.showToast({
+							title: '订单创建成功',
+							icon: "success"
+						})
+						setTimeout(function() {
+							/* 返回到订单列表中 */
+							uni.navigateTo({
+								url:'/pages/xiaoshou/dingdan/dingdan'
+							})
+						}, 1000);
 					},
 					fail: (err) => {
 						console.log(err);
@@ -756,7 +764,7 @@
 	// 支付方式的样式
 	.zhifuPopupDiv {
 		padding: 20px 30px;
-
+		background: #fff;
 		.title {
 			padding: 10px 0;
 			border-bottom: 1px solid #ccc;
